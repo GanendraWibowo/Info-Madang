@@ -1,8 +1,6 @@
 <?php
 
-use App\Http\Controllers\AuthController;
+use App\Http\Controllers\LoginController;
+use illuminate\Support\Facades\Route;
 
-Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
-Route::post('/login', [AuthController::class, 'login']);
-Route::get('/admin_dashboard', [AuthController::class, 'adminDashboard'])->middleware('auth');
-
+Route::get('/login', [LoginController::class, 'index'])->name('account.login');
