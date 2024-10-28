@@ -1,6 +1,11 @@
 <?php
 
 use App\Http\Controllers\LoginController;
-use illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Route;
 
-Route::get('/login', [LoginController::class, 'index'])->name('account.login');
+route::get('/', function (){
+    return view('welcome');
+});
+
+Route::get('/account/login', [LoginController::class, 'index'])->name('account.login');
+Route::get('/account/authenticate', [LoginController::class, 'authenticate'])->name('account.authenticate');
