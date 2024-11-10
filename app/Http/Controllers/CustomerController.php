@@ -10,14 +10,39 @@ use Illuminate\Support\Facades\Auth;
 
 class CustomerController extends Controller
 {
-    // Menampilkan menu dengan pilihan kategori
-    public function menu($category = null)
+    public function menu(Request $request, $category = null)
     {
-        $categories = ['makanan', 'minuman', 'snacks', 'PaHe'];
-        $products = $category ? Product::where('category', $category)->get() : Product::all();
+        // List of categories to filter by
+        $categories = ['makanan', 'minuman', 'snack', 'PaHe'];
 
-        return view('customer.menu', compact('products', 'categories'));
+        // Get the search query
+        $search = $request->input('search');
+
+        // Query for products based on category and search
+        $query = Product::query();
+
+        // Filter by category if it's provided and valid
+        if ($category && in_array($category, $categories)) {
+            $query->where('category', $category);
+        }
+
+        // Filter by search query
+        if ($search) {
+            $query->where('name', 'like', '%' . $search . '%');
+        }
+
+        // Get products with pagination
+        $products = $query->paginate(12);
+
+        // Debug the variables
+        dd(compact('products', 'categories', 'search'));
+
+        // Return the view and pass the variables
+        return view('customer.catalog', compact('products', 'categories', 'search'));
     }
+
+
+
 
     // Tambah produk ke keranjang
     public function addToCart(Request $request, $productId)
@@ -80,5 +105,19 @@ class CustomerController extends Controller
     {
         $order = Order::where('id', $orderId)->where('user_id', Auth::id())->firstOrFail();
         return view('customer.order_status', compact('order'));
+    }
+
+    // Melihat cart
+    public function cart()
+    {
+        $cart = session()->get('cart', []);
+        return view('customer.cart', compact('cart'));
+    }
+
+    // Melihat riwayat pesanan pelanggan
+    public function orderHistory()
+    {
+        $orders = Order::where('user_id', Auth::id())->orderBy('created_at', 'desc')->get();
+        return view('customer.order_history', compact('orders'));
     }
 }

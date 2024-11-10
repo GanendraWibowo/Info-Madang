@@ -6,10 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OwnerController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ProductController;
-
-
-
-
+use App\Http\Controllers\CatalogController;
 
 // Halaman utama
 Route::get('/', function () {
@@ -42,17 +39,25 @@ Route::middleware(['auth', 'can:owner-access'])->group(function () {
     Route::get('/owner/profile', [OwnerController::class, 'profileOwner'])->name('owner.profile');
     Route::post('/owner/updatePassword', [OwnerController::class, 'updatePassword'])->name('owner.updatePassword');
     Route::post('/logout', [OwnerController::class, 'logout'])->name('logout');
+    Route::put('/owner/products/{id}', [ProductController::class, 'updateProduct'])->name('owner.updateProduct');
+    Route::put('/owner/products/{id}/stock', [ProductController::class, 'updateStock'])->name('owner.updateStock');
 });
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/customer/menu/{category?}', [CustomerController::class, 'menu'])->name('customer.menu');
+    // Customer Routes
+    Route::get('/customer/menu/{category?}', [CustomerController::class, 'menu'])->name('catalog');
     Route::post('/customer/add-to-cart/{productId}', [CustomerController::class, 'addToCart'])->name('customer.addToCart');
     Route::get('/customer/checkout', [CustomerController::class, 'checkout'])->name('customer.checkout');
     Route::post('/customer/process-payment', [CustomerController::class, 'processPayment'])->name('customer.processPayment');
     Route::get('/customer/order-status/{orderId}', [CustomerController::class, 'orderStatus'])->name('customer.order.status');
+
+    // New routes for Cart and Order History
+    Route::get('/cart', [CustomerController::class, 'cart'])->name('customer.cart');
+    Route::get('/orders', [CustomerController::class, 'orderHistory'])->name('customer.orders');
 });
 
-Route::put('/owner/products/{id}', [ProductController::class, 'updateProduct'])->name('owner.updateProduct');
-Route::put('/owner/products/{id}/stock', [ProductController::class, 'updateStock'])->name('owner.updateStock');
+
+
+
 
 

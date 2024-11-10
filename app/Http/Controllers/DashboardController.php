@@ -26,19 +26,19 @@ class DashboardController extends Controller
     public function customerDashboard()
     {
         $products = Product::all();
-        return view('dashboard', compact('products'));
+        return view('pelanggan.dashboard', compact('products'));
     }
 
-    // Menampilkan halaman checkout
-    public function checkout(Request $request)
-    {
-        // Logika checkout
-        return view('checkout');
-    }
+    // // Menampilkan halaman checkout
+    // public function checkout(Request $request)
+    // {
+    //     // Logika checkout
+    //     return view('pelanggan.checkout');
+    // }
 
-    // Proses pemesanan
-    public function placeOrder(Request $request)
-    {
-        // Logika untuk memproses pemesanan
-    }
+    // // Proses pemesanan
+    // public function placeOrder(Request $request)
+    // {
+    //     // Logika untuk memproses pemesanan
+    // }
 }
