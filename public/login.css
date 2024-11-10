@@ -236,6 +236,12 @@ form.sign-in-form {
 }
 
 /* ANIMATION */
+.container:before {
+    z-index: 2;
+}
+.forms-container, .signin-signup, .sign-in-form, .sign-up-form {
+    z-index: 3; Pastikan form berada di atas circle
+}
 
 .container.sign-up-mode:before {
   transform: translate(100%, -50%);
@@ -253,12 +259,12 @@ form.sign-in-form {
 
 .container.sign-up-mode form.sign-up-form {
   opacity: 1;
-  z-index: 2;
+  z-index: 3;
 }
 
 .container.sign-up-mode form.sign-in-form {
   opacity: 0;
-  z-index: 1;
+  z-index: 3;
 }
 
 .container.sign-up-mode .right-panel .image,
@@ -273,6 +279,42 @@ form.sign-in-form {
 .container.sign-up-mode .right-panel {
   pointer-events: all;
 }
+
+.role-dropdown {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 30px;
+    background: #f0f0f0;
+    font-size: 1rem;
+    color: #333;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.role-dropdown:focus {
+    background: #e0e0e0;
+}
+
+.alert {
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid transparent;
+    border-radius: 5px;
+}
+
+.alert-danger {
+    color: #d9534f;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+}
+
+.alert-success {
+    color: #3c763d;
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+}
+
 
 @media (max-width: 870px) {
   .container {

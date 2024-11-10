@@ -1,0 +1,191 @@
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+:root {
+    --white: #fff;
+    --main-color: #f44064;
+    --grey: #434141;
+    --light-grey: #aaa;
+}
+body {
+    background-color: #f1f1f1;
+    transition: margin-left 0.5s ease;
+
+}
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    left: 0;
+    background-color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 30px;
+    z-index: 1000;
+    box-shadow: 0 0 2px var(--light-grey);
+    transition: margin-left 0.5s ease;
+}
+.logo {
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--main-color);
+}
+.sidebar {
+    background-color: var(--white);
+    width: 260px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    padding: 80px 20px;
+    z-index: 100;
+    overflow-y: scroll;
+    box-shadow: 0 0 1px var(--light-grey);
+    transition: all 0.5s ease;
+}
+.sidebar.close {
+    padding: 60px 0;
+    width: 80px;
+}
+.sidebar::-webkit-scrollbar {
+    display: none;
+}
+.menu_content {
+    position: relative;
+}
+.menu_items {
+    padding: 0;
+    list-style: none;
+}
+.navlink_icon {
+    position: relative;
+    font-size: 22px;
+    min-width: 50px;
+    line-height: 40px;
+    display: inline-block;
+    text-align: center;
+    border-radius: 6px;
+}
+.navlink_icon::before {
+    content: "";
+    position: absolute;
+    height: 100%;
+    width: calc(100% + 100px);
+    left: -20px;
+}
+.navlink_icon:hover {
+    background: var(--main-color);
+}
+.sidebar .nav_link {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 4px 15px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--grey);
+    white-space: nowrap;
+}
+.sidebar.close .navlink {
+    display: none;
+}
+.nav_link:hover {
+    color: var(--white);
+    background: var(--main-color);
+}
+.sidebar.close .nav_link:hover {
+    background: var(--white);
+}
+.collapse_content {
+    position: fixed;
+    bottom: 60px;
+    left: 0;
+    width: 260px;
+    cursor: pointer;
+    transition: all 0.5s ease;
+}
+.collapse {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    left: 0;
+    justify-content: space-around;
+    padding: 18px 0;
+    text-align: center;
+    width: 100%;
+    color: var(--grey);
+    border-top: 1px solid var(--light-grey);
+    background-color: var(--white);
+}
+.collapse i {
+    font-size: 20px;
+}
+.collapse span {
+    font-size: 18px;
+}
+.sidebar.close .collapse_content {
+    width: 50px;
+    left: 15px;
+}
+.sidebar.close .collapse span {
+    display: none;
+}
+.sidebar.hoverable .collapse_sidebar {
+    display: none;
+}
+#sidebarOpen {
+    display: none;
+}
+@media screen and (max-width: 480px) {
+    #sidebarOpen {
+        font-size: 25px;
+        display: block;
+        margin-right: 10px;
+        cursor: pointer;
+        color: var(--grey);
+    }
+    .sidebar.close {
+        left: -100%;
+    }
+    .sidebar.close .collapse_content {
+        left: -100%;
+    }
+}
+
+.main-content {
+    margin-left: 200px; /* Same width as the sidebar */
+    padding: 100px;
+    margin-top: 30px;
+}
+
+.sidebar.close ~ .main-content {
+    margin-left: 10px; /* Width when the sidebar is closed */
+    transition: margin-left 0.5s ease;
+
+}
+
+.sidebar.open ~ .main-content {
+    margin-left: 10px; /* Width when the sidebar is opened */
+    transition: margin-left 0.5s ease;
+
+}
+
+//.card-img-top {
+    //object-fit: cover;
+//}
+
+@media screen and (max-width: 480px) {
+    .main-content {
+        margin-left:100px;
+    }
+}
+
