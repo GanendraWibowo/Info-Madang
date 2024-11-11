@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="{{ asset('all.css') }}">
 </head>
 <body>
-    @include('navbar')
+    @include('owner.NavbarOwner')
     {{-- @include('layouts.sidebar') --}}
     <div class="main-content">
         @yield('content')
