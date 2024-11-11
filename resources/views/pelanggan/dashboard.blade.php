@@ -11,19 +11,19 @@
                     <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Select Category
                     </button>
-                    <ul class="dropdown-menu">
+                    {{-- <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="{{ route('catalog') }}">All Categories</a></li>
-                        @foreach ($categories as $cat)
+                        @foreach ($category as $cat)
                             <li><a class="dropdown-item" href="{{ route('catalog', ['category' => $cat]) }}">{{ $cat }}</a></li>
                         @endforeach
-                    </ul>
+                    </ul> --}}
                 </div>
             </div>
 
             <div class="col">
                 <form action="{{ route('catalog') }}" method="GET" class="form-inline">
-                    <input type="hidden" name="category" value="{{ $category }}">
-                    <input class="form-control me-2" type="search" name="search" placeholder="Search products" aria-label="Search" value="{{ $search }}">
+                    {{-- <input type="hidden" name="category" value="{{ $category }}"> --}}
+                    {{-- <input class="form-control me-2" type="search" name="search" placeholder="Search products" aria-label="Search" value="{{ $search }}"> --}}
                     <button class="btn btn-outline-success" type="submit">Search</button>
                 </form>
             </div>
@@ -50,9 +50,11 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
     <script>
         $(document).ready(function () {
-            $('.add-to-cart').click(function () {
+            $('.addToCart').click(function () {
                 var productId = $(this).data('id');
-                $.post("{{ route('add.to.cart') }}", { product_id: productId, _token: '{{ csrf_token() }}' }, function (response) {
+                $.post("{{ route('customer.addToCart', ':productId') }}".replace(':productId', productId), {
+                    _token: '{{ csrf_token() }}'
+                }, function (response) {
                     alert(response.message);
                 }, 'json');
             });

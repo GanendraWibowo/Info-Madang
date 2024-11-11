@@ -24,9 +24,9 @@ class CatalogController extends Controller
 
         $products = $query->get();
 
-        $categories = ["makanan & minuman", "kebutuhan rumah tangga", "aksessoris", "persabunan"];
+        $category = ["makanan", "minuman", "snack", "PaHe"];
 
-        return view('catalog.index', compact('products', 'categories', 'category', 'search'));
+        return view('catalog.index', compact('products', 'category', 'category', 'search'));
     }
 
     public function addToCart(Request $request)

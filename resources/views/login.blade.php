@@ -61,7 +61,7 @@
                     </div>
                     <div class="input-field">
                         <i class="fas fa-lock"></i>
-                        <input type="password" name="confirmed_password" id="confirmed_password" placeholder="Konfirmasi password" required />
+                        <input type="password" name="password_confirmation" id="password_confirmation" placeholder="Konfirmasi password" required />
                     </div>
                     @if ($errors->has('name'))
                         <div class="alert alert-danger">

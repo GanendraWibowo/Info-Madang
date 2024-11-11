@@ -46,7 +46,7 @@ Route::middleware(['auth', 'can:owner-access'])->group(function () {
 Route::middleware(['auth'])->group(function () {
     // Customer Routes
     Route::get('/customer/menu/{category?}', [CustomerController::class, 'menu'])->name('catalog');
-    Route::post('/customer/add-to-cart/{productId}', [CustomerController::class, 'addToCart'])->name('customer.addToCart');
+    Route::post('/customer/add-to-cart/{productId}', [CustomerController::class, 'cart'])->name('customer.addToCart');
     Route::get('/customer/checkout', [CustomerController::class, 'checkout'])->name('customer.checkout');
     Route::post('/customer/process-payment', [CustomerController::class, 'processPayment'])->name('customer.processPayment');
     Route::get('/customer/order-status/{orderId}', [CustomerController::class, 'orderStatus'])->name('customer.order.status');
@@ -54,6 +54,7 @@ Route::middleware(['auth'])->group(function () {
     // New routes for Cart and Order History
     Route::get('/cart', [CustomerController::class, 'cart'])->name('customer.cart');
     Route::get('/orders', [CustomerController::class, 'orderHistory'])->name('customer.orders');
+
 });
 
 

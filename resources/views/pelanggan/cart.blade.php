@@ -1,5 +1,5 @@
 <!-- resources/views/customer/cart.blade.php -->
-@extends('layouts.app')
+@extends('layouts.apel')
 
 @section('content')
 <div class="container">

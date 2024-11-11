@@ -13,7 +13,7 @@ class CustomerController extends Controller
     public function menu(Request $request, $category = null)
     {
         // List of categories to filter by
-        $categories = ['makanan', 'minuman', 'snack', 'PaHe'];
+        $category = ['makanan', 'minuman', 'snack', 'PaHe'];
 
         // Get the search query
         $search = $request->input('search');
@@ -22,7 +22,7 @@ class CustomerController extends Controller
         $query = Product::query();
 
         // Filter by category if it's provided and valid
-        if ($category && in_array($category, $categories)) {
+        if ($category && in_array($category, $category)) {
             $query->where('category', $category);
         }
 
@@ -35,10 +35,10 @@ class CustomerController extends Controller
         $products = $query->paginate(12);
 
         // Debug the variables
-        dd(compact('products', 'categories', 'search'));
+        dd(compact('products', 'category', 'search'));
 
         // Return the view and pass the variables
-        return view('customer.catalog', compact('products', 'categories', 'search'));
+        return view('customer.catalog', compact('products', 'category', 'search'));
     }
 
 
@@ -111,7 +111,7 @@ class CustomerController extends Controller
     public function cart()
     {
         $cart = session()->get('cart', []);
-        return view('customer.cart', compact('cart'));
+        return view('pelanggan.cart', compact('cart'));
     }
 
     // Melihat riwayat pesanan pelanggan

@@ -10,7 +10,7 @@ class ProductController extends Controller
     public function edit($id)
     {
         $product = Product::findOrFail($id);
-        $categories = ['makanan', 'minuman', 'snacks', 'PaHe']; // Sesuaikan dengan kategori yang ada
+        $category = ['makanan', 'minuman', 'snacks', 'PaHe']; // Sesuaikan dengan kategori yang ada
         return view('owner.product_edit', compact('product', 'categories'));
     }
 

@@ -10,7 +10,7 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
-            <a class="navbar-brand" href="{{ route('customer.menu') }}">Kantin FT UNY</a>
+            <a class="navbar-brand" href="{{ route('login.dashboard') }}">Kantin FT UNY</a>
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">

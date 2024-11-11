@@ -21,12 +21,12 @@ class OwnerController extends Controller
     public function showDashboard()
     {
         // Mengambil kategori unik dari produk
-        $categories = Product::distinct()->pluck('category');
+        $category = Product::distinct()->pluck('category');
         // Mengambil semua produk
         $products = Product::all();
 
         // Mengirimkan kategori dan produk ke view
-        return view('dashboardOwner', compact('categories', 'products'));
+        return view('dashboardOwner', compact('category', 'products'));
     }
 
 
