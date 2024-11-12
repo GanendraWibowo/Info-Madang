@@ -10,22 +10,22 @@ use App\Http\Controllers\CatalogController;
 
 // Halaman utama
 Route::get('/', function () {
-    return view('welcome');
+    return view('login');
 });
 
 // Rute untuk login
-Route::get('/account/login', [LoginController::class, 'index'])->name('account.login');
+Route::get('/login', [LoginController::class, 'index'])->name('account.login');
 Route::post('/account/authenticate', [LoginController::class, 'authenticate'])->name('account.authenticate');
 
 // Rute untuk register
-Route::get('/account/register', [LoginController::class, 'register'])->name('account.register');
+Route::get('/register', [LoginController::class, 'register'])->name('account.register');
 Route::post('/account/process-register', [LoginController::class, 'processRegister'])->name('account.processRegister');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('account/dashboard/owner', [DashboardController::class, 'ownerDashboard'])->name('dashboard.owner');
     Route::get('account/dashboard/customer', [DashboardController::class, 'customerDashboard'])->name('login.dashboard');
-    Route::get('/checkout', [DashboardController::class, 'checkout'])->name('checkout');
-    Route::post('/place-order', [DashboardController::class, 'placeOrder'])->name('place.order');
+    // Route::get('/checkout', [DashboardController::class, 'checkout'])->name('checkout');
+    // Route::post('/place-order', [DashboardController::class, 'placeOrder'])->name('place.order');
 });
 
 
@@ -45,15 +45,19 @@ Route::middleware(['auth', 'can:owner-access'])->group(function () {
 
 Route::middleware(['auth'])->group(function () {
     // Customer Routes
-    Route::get('/customer/menu/{category?}', [CustomerController::class, 'menu'])->name('catalog');
+    // Route::get('/customer/dashboard', [OwnerController::class, 'showDashboardd'])->name('customer.dashboard');
+    Route::get('/customer/menu/{category?}', [CustomerController::class, 'Products'])->name('catalog');
     Route::post('/customer/add-to-cart/{productId}', [CustomerController::class, 'cart'])->name('customer.addToCart');
     Route::get('/customer/checkout', [CustomerController::class, 'checkout'])->name('customer.checkout');
     Route::post('/customer/process-payment', [CustomerController::class, 'processPayment'])->name('customer.processPayment');
     Route::get('/customer/order-status/{orderId}', [CustomerController::class, 'orderStatus'])->name('customer.order.status');
+    Route::get('/customer/profile', [CustomerController::class, 'profilee'])->name('customer.profile');
+    Route::post('/logout', [CustomerController::class, 'logout'])->name('logout');
+
 
     // New routes for Cart and Order History
-    Route::get('/cart', [CustomerController::class, 'cart'])->name('customer.cart');
-    Route::get('/orders', [CustomerController::class, 'orderHistory'])->name('customer.orders');
+    Route::get('/customer/cart', [CustomerController::class, 'cart'])->name('customer.cart');
+    Route::get('/customer/orders', [CustomerController::class, 'orderHistory'])->name('customer.orders');
 
 });
 

@@ -10,6 +10,30 @@ use Illuminate\Support\Facades\Auth;
 
 class CustomerController extends Controller
 {
+    // public function showDashboardd(Request $request)
+    // {
+    //     $category = $request->input('category');
+
+    //     if ($category) {
+    //         $products = Product::where('category', $category)->get();
+    //     } else {
+    //         $products = Product::all();
+    //     }
+
+    //     return view('login.dashboard', compact('products'));
+    // }
+
+    public function product(Request $request)
+    {
+        $category = $request->get('category');
+
+        $products = Product::when($category, function ($query) use ($category) {
+            return $query->where('category', $category);
+        })->get();
+
+        return view('pelanggan.catalog', compact('products'));
+    }
+
     public function menu(Request $request, $category = null)
     {
         // List of categories to filter by
@@ -41,18 +65,31 @@ class CustomerController extends Controller
         return view('customer.catalog', compact('products', 'category', 'search'));
     }
 
-
-
+    public function profilee()
+    {
+        return view('pelanggan.profile');
+    }
 
     // Tambah produk ke keranjang
     public function addToCart(Request $request, $productId)
     {
+        $product = Product::findOrFail($productId);
+
+        // Check if the product is out of stock
+        if ($product->stock <= 0) {
+            return response()->json(['message' => 'Produk ini habis dan tidak dapat ditambahkan ke keranjang.'], 400);
+        }
+
         $cart = session()->get('cart', []);
 
+        // Check if the product exists in the cart and increment quantity if stock allows
         if (isset($cart[$productId])) {
-            $cart[$productId]['quantity']++;
+            if ($cart[$productId]['quantity'] < $product->stock) {
+                $cart[$productId]['quantity']++;
+            } else {
+                return response()->json(['message' => 'Stok tidak mencukupi untuk menambah produk ke keranjang.'], 400);
+            }
         } else {
-            $product = Product::find($productId);
             $cart[$productId] = [
                 "name" => $product->name,
                 "quantity" => 1,
@@ -61,8 +98,9 @@ class CustomerController extends Controller
         }
 
         session()->put('cart', $cart);
-        return redirect()->route('customer.menu')->with('success', 'Item berhasil ditambahkan ke keranjang!');
+        return response()->json(['message' => 'Item berhasil ditambahkan ke keranjang!']);
     }
+
 
     // Checkout dan tampilkan total
     public function checkout()
@@ -111,13 +149,22 @@ class CustomerController extends Controller
     public function cart()
     {
         $cart = session()->get('cart', []);
-        return view('pelanggan.cart', compact('cart'));
+        return view('pelanggan.addToCart', compact('cart'));
     }
 
     // Melihat riwayat pesanan pelanggan
     public function orderHistory()
     {
         $orders = Order::where('user_id', Auth::id())->orderBy('created_at', 'desc')->get();
-        return view('customer.order_history', compact('orders'));
+        return view('pelanggan.order_history', compact('orders'));
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect('/login');
     }
 }

@@ -7,7 +7,7 @@
 
     <!-- Category Filter -->
     <div class="mb-3">
-        <form action="{{ route('customer.menu') }}" method="GET">
+        <form action="{{ route('catalog') }}" method="GET">
             <label for="category" class="form-label">Filter by Category</label>
             <select name="category" id="category" class="form-select" onchange="this.form.submit()">
                 <option value="">All Categories</option>
@@ -38,7 +38,7 @@
         @endforeach
     </div>
 
-    <!-- Pagination (if needed) -->
-    {{ $products->links() }}
+    {{-- <!-- Pagination (if needed) -->
+    {{ $products->links() }} --}}
 </div>
 @endsection

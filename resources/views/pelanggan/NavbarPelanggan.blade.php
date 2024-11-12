@@ -18,16 +18,13 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('dashboard') }}">Dashboard</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('owner.products') }}">Produk</a>
+                        <a class="nav-link" href="{{ route('login.dashboard') }}">Dashboard</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('cart') }}">Keranjang</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('owner.reports') }}">Status dan Riwayat pembelian</a>
+                        <a class="nav-link" href="{{ route('customer.orders') }}">Status dan Riwayat pembelian</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">

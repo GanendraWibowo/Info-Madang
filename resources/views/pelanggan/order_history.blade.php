@@ -17,7 +17,7 @@
             </div>
         @endforeach
     @else
-        <p>No orders found.</p>
+        <p>Belum ada transaksi</p>
     @endif
 </div>
 @endsection

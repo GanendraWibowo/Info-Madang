@@ -23,9 +23,16 @@ class DashboardController extends Controller
     }
 
     // Dashboard untuk Pelanggan
-    public function customerDashboard()
+    public function customerDashboard(Request $request)
     {
-        $products = Product::all();
+        $category = $request->input('category');
+
+        if ($category) {
+            $products = Product::where('category', $category)->get();
+        } else {
+            $products = Product::all();
+        }
+
         return view('pelanggan.dashboard', compact('products'));
     }
 
