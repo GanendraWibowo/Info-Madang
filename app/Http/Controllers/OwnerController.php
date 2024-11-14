@@ -15,7 +15,7 @@ class OwnerController extends Controller
     public function product()
     {
         $products = Product::all();
-        return view('owner.product', compact('products'));
+        return view('owner.products', compact('products'));
     }
     // Di dalam OwnerController.php
     public function showDashboard()

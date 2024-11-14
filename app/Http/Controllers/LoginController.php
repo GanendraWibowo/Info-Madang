@@ -83,7 +83,7 @@ class LoginController extends Controller
             'email.required' => 'Email wajib diisi.',
             'email.email' => 'Format email tidak valid.',
             'email.unique' => 'Email sudah terdaftar.',
-            'password.required' => 'Password wajib diisi.',
+            'password.required' => 'Password wajib  diisi.',
             'password.confirmed' => 'Konfirmasi password tidak sesuai.',
             'password.min' => 'Password minimal 6 karakter.',
         ]);
