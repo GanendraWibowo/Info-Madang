@@ -18,7 +18,7 @@ class ProductController extends Controller
             'description' => 'required|string',
             'price' => 'required|numeric',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // 2MB Max
-            'category' => 'required|in:makanan,minuman,snacks,PaHe', // Updated validation
+            'category' => 'required|string|max:255',
         ]);
 
         if ($validator->fails()) {
@@ -43,11 +43,11 @@ class ProductController extends Controller
         // Redirect to the owner dashboard
         return redirect()->route('owner.dashboard')->with('success', 'Product added successfully!');
     }
-
+    
     public function edit($id)
     {
         $product = Product::findOrFail($id);
-        $categories = ['makanan', 'minuman', 'snacks', 'PaHe']; // Updated categories
+        $category = ['makanan', 'minuman', 'snacks', 'PaHe']; // Sesuaikan dengan kategori yang ada
         return view('owner.product_edit', compact('product', 'categories'));
     }
 
@@ -55,15 +55,15 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($id);
 
-        // Validate data
+        // Validasi data
         $request->validate([
             'name' => 'required|string|max:255',
             'price' => 'required|numeric',
-            'category' => 'required|in:makanan,minuman,snacks,PaHe', // Updated validation
+            'category' => 'required|string',
             'stock' => 'required|integer',
         ]);
 
-        // Update product data
+        // Update data produk
         $product->update([
             'name' => $request->name,
             'price' => $request->price,
@@ -78,12 +78,12 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($id);
 
-        // Validate new stock
+        // Validasi stok baru
         $request->validate([
             'new_stock' => 'required|integer',
         ]);
 
-        // Update stock
+        // Update stok
         $product->stock = $request->new_stock;
         $product->save();
 

@@ -36,14 +36,6 @@ class DashboardController extends Controller
         return view('pelanggan.dashboard', compact('products'));
     }
 
-    public function index()
-    {
-        // You can retrieve data to be passed to the view here
-        // For example, you might want to get products, users, etc.
-
-        return view('dashboard.index'); // Adjust the view path as necessary
-    }
-
     // // Menampilkan halaman checkout
     // public function checkout(Request $request)
     // {

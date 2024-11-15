@@ -17,32 +17,19 @@ class OwnerController extends Controller
         $products = Product::all();
         return view('owner.products', compact('products'));
     }
-
-    // Menampilkan dashboard owner
+    // Di dalam OwnerController.php
     public function showDashboard()
     {
         // Mengambil kategori unik dari produk
         $category = Product::distinct()->pluck('category');
-
         // Mengambil semua produk
         $products = Product::all();
 
-        // Menghitung total pendapatan
-        $totalIncome = Order::sum('price'); // Ganti 'price' dengan field yang sesuai di model Order
-
-        // Menghitung total pesanan
-        $totalOrders = Order::count();
-
-        // Menghitung total outcomes (biaya tetap atau variabel)
-        // Misalnya, Anda bisa menambahkan metode untuk menghitung pengeluaran
-        $totalOutcome = $this->calculateTotalOutcomes(); // Ganti dengan metode yang sesuai
-
-        // Menghitung keuntungan
-        $profit = $totalIncome - $totalOutcome;
-
-        // Mengirimkan kategori, produk, dan statistik ke view
-        return view('dashboardOwner', compact('category', 'products', 'totalIncome', 'totalOrders', 'totalOutcome', 'profit'));
+        // Mengirimkan kategori dan produk ke view
+        return view('dashboardOwner', compact('category', 'products'));
     }
+
+
 
     // Menampilkan halaman owner_order
     public function order()
@@ -57,15 +44,6 @@ class OwnerController extends Controller
         $revenue = Order::sum('total'); // Hitung pendapatan
         $orderCount = Order::count(); // Hitung jumlah pesanan
         return view('owner.report', compact('revenue', 'orderCount'));
-    }
-
-    // Menghitung total pengeluaran (contoh)
-    private function calculateTotalOutcomes()
-    {
-        // Logika untuk menghitung total pengeluaran
-        // Misalnya, jika Anda memiliki tabel pengeluaran
-        // return Expense::sum('amount'); // Ganti dengan model dan field yang sesuai
-        return 500000; // Contoh nilai tetap, ganti dengan logika yang sesuai
     }
 
     // Menampilkan antrian pesanan untuk owner

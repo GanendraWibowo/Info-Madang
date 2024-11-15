@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Facade;
 
 class LoginController extends Controller
 {
@@ -35,14 +35,14 @@ class LoginController extends Controller
                 ->withErrors($validator);
         }
 
-        Log::info('Login attempt', ['email' => $request->email]);
+        \Log::info('Login attempt', ['email' => $request->email]);
 
         // Cek apakah pengguna ada di database
         $user = User::where('email', $request->email)->first();
 
         if ($user) {
             if (Hash::check($request->password, $user->password)) {
-                Log::info('Password match for user', ['email' => $user->email]);
+                \Log::info('Password match for user', ['email' => $user->email]);
                 // Jika password cocok, login berhasil
                 Auth::login($user);
 
@@ -56,11 +56,11 @@ class LoginController extends Controller
                 // Default redirect jika role tidak dikenali
                 return redirect()->route('login.dashboard');
             } else {
-                Log::warning('Password mismatch for user', ['email' => $user->email]);
+                \Log::warning('Password mismatch for user', ['email' => $user->email]);
                 return redirect()->back()->withErrors(['login_error' => 'Email atau password salah']);
             }
         } else {
-            Log::warning('User not found', ['email' => $request->email]);
+            \Log::warning('User not found', ['email' => $request->email]);
             return redirect()->back()->withErrors(['login_error' => 'Email atau password salah']);
         }
     }
@@ -103,8 +103,8 @@ class LoginController extends Controller
         $user->role = 'Pelanggan'; // Sesuaikan dengan peran default Anda
         $user->save();
 
-        Log::info('User registered successfully', ['email' => $user->email]);
+        \Log::info('User registered successfully', ['email' => $user->email]);
 
-        return redirect()->route('login')->with('sukses', 'Anda telah berhasil mendaftar. Silakan login.');
+        return redirect()->route('account.login')->with('sukses', 'Anda telah berhasil mendaftar. Silakan login.');
     }
 }

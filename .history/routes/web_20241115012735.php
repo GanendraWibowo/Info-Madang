@@ -35,7 +35,6 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth', 'can:admin-access'])->group(function () {
     Route::get('/owner/dashboard', [OwnerController::class, 'showDashboard'])->name('owner.dashboard');
     Route::get('/owner/products', [OwnerController::class, 'products'])->name('owner.products');
-    Route::get('/owner/products/store', [ProductController::class, 'store'])->name('owner.products.store');
     Route::get('/owner/order', [OwnerController::class, 'order'])->name('owner.orders');
     Route::get('/owner/report', [OwnerController::class, 'report'])->name('owner.reports');
     Route::get('/owner/orders-queue', [OwnerController::class, 'orderQueue'])->name('owner.orders.queue');

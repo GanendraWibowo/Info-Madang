@@ -49,7 +49,7 @@ class LoginController extends Controller
                 // Cek role pengguna
                 if ($user->role === 'admin') {
                     return redirect()->route('dashboard.owner'); // Redirect ke dashboard owner
-                } else if ($user->role === 'pelanggan') {
+                } elseif ($user->role === 'pelanggan') {
                     return redirect()->route('login.dashboard'); // Redirect ke dashboard pelanggan
                 }
 
@@ -60,16 +60,15 @@ class LoginController extends Controller
                 return redirect()->back()->withErrors(['login_error' => 'Email atau password salah']);
             }
         } else {
-            Log::warning('User not found', ['email' => $request->email]);
+            Log::warning('User  not found', ['email' => $request->email]);
             return redirect()->back()->withErrors(['login_error' => 'Email atau password salah']);
         }
     }
 
-
     // Menampilkan halaman register
     public function register()
     {
-        return view('login'); // Pastikan rute tampilan ini sesuai dengan rute view untuk halaman registrasi
+        return view('register'); // Pastikan rute tampilan ini sesuai dengan rute view untuk halaman registrasi
     }
 
     // Proses registrasi
@@ -84,7 +83,7 @@ class LoginController extends Controller
             'email.required' => 'Email wajib diisi.',
             'email.email' => 'Format email tidak valid.',
             'email.unique' => 'Email sudah terdaftar.',
-            'password.required' => 'Password wajib  diisi.',
+            'password.required' => 'Password wajib diisi.',
             'password.confirmed' => 'Konfirmasi password tidak sesuai.',
             'password.min' => 'Password minimal 6 karakter.',
         ]);
@@ -100,11 +99,11 @@ class LoginController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->password = Hash::make($request->password); // Hash password
-        $user->role = 'Pelanggan'; // Sesuaikan dengan peran default Anda
+        $user->role = 'pelanggan'; // Sesuaikan dengan peran default Anda
         $user->save();
 
-        Log::info('User registered successfully', ['email' => $user->email]);
+        Log::info('User  registered successfully', ['email' => $user->email]);
 
-        return redirect()->route('login')->with('sukses', 'Anda telah berhasil mendaftar. Silakan login.');
+        return redirect()->route('account.login')->with('sukses', 'Anda telah berhasil mendaftar. Silakan login.');
     }
 }
