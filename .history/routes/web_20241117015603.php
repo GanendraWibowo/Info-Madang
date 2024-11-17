@@ -35,8 +35,7 @@
     Route::middleware(['auth', 'can:admin-access'])->group(function () {
         Route::get('/owner/dashboard', [DashboardController::class, 'ownerDashboard'])->name('dashboard.owner');
         Route::get('/owner/dashboard', [OwnerController::class, 'showDashboard'])->name('owner.dashboard');
-        Route::get('/owner/products', [ProductController::class, 'index'])->name('owner.products');
-        Route::get('/owner/products/create', [OwnerController::class, 'products'])->name('owner.products.create');
+        Route::get('/owner/products', [OwnerController::class, 'products'])->name('owner.products');
         Route::post('/owner/products/store', [ProductController::class, 'store'])->name('owner.products.store');
         Route::get('/owner/order', [OwnerController::class, 'order'])->name('owner.orders');
         Route::get('/owner/report', [OwnerController::class, 'report'])->name('owner.reports');
@@ -45,8 +44,7 @@
         Route::get('/owner/profile', [OwnerController::class, 'profileOwner'])->name('owner.profile');
         Route::post('/owner/updatePassword', [OwnerController::class, 'updatePassword'])->name('owner.updatePassword');
         Route::post('/logout', [OwnerController::class, 'logout'])->name('logout');
-        Route::get('/owner/products/{id}/edit', [ProductController::class, 'edit'])->name('owner.products.edit');
-        Route::put('/owner/products/{id}', [ProductController::class, 'updateProduct'])->name('owner.updateProduct');
+        Route::get('/owner/products/{id}', [ProductController::class, 'updateProduct'])->name('owner.updateProduct');
         Route::put('/owner/products/{id}/stock', [ProductController::class, 'updateStock'])->name('owner.updateStock');
     });
 

@@ -10,27 +10,6 @@ use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
-    public function index(Request $request)
-    {
-        $query = Product::query();
-
-        // Filter by category if provided
-        if ($request->has('category') && $request->category) {
-            $query->where('category', $request->category);
-        }
-
-        // Search by product name if provided
-        if ($request->has('search') && $request->search) {
-            $query->where('name', 'like', '%' . $request->search . '%');
-        }
-
-        // Get the products with pagination
-        $products = $query->paginate(10); // Adjust the number of items per page as needed
-
-        // Pass the products to the view
-        return view('dashboard', compact('products'));
-    }
-
     public function store(Request $request)
     {
         // Validate the request
@@ -92,19 +71,22 @@ class ProductController extends Controller
             'stock' => $request->stock,
         ]);
 
-        return redirect()->route('dashboard.owner')->with('success', 'Produk berhasil diupdate.');
+        return redirect()->route('owner.products')->with('success', 'Produk berhasil diupdate.');
     }
 
     public function updateStock(Request $request, $id)
     {
+        $product = Product::findOrFail($id);
+
+        // Validate new stock
         $request->validate([
-            'stock' => 'required|integer|min:0', // Validate the stock input
+            'new_stock' => 'required|integer',
         ]);
 
-        $product = Product::findOrFail($id);
-        $product->stock = $request->stock; // Update the stock
+        // Update stock
+        $product->stock = $request->new_stock;
         $product->save();
 
-        return redirect()->back()->with('success', 'Stock berhasil diupdate.');
+        return redirect()->route('owner.products')->with('success', 'Stok produk berhasil diupdate.');
     }
 }

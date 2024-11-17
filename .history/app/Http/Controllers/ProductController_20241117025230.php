@@ -30,7 +30,6 @@ class ProductController extends Controller
         // Pass the products to the view
         return view('dashboard', compact('products'));
     }
-
     public function store(Request $request)
     {
         // Validate the request

@@ -18,10 +18,9 @@
 
     <div class="d-flex align-items-center mb-4">
         <div class="dropdown me-2">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Pilih Kategori
+            Pilih Kategori
             </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <ul class="dropdown-menu">
                 <li><a class="dropdown-item" href="{{ route('owner.products') }}">Semua Kategori</a></li>
                 @php
                 $categories = \App\Models\Product::distinct()->pluck('category');
@@ -33,10 +32,10 @@
         </div>
 
         <form action="{{ route('owner.products') }}" method="GET" class="d-flex mb-4">
-            <input type="hidden" name="category" value="{{ request('category') }}">
-            <input class="form-control me-2" type="search" name="search" placeholder="Cari produk" value="{{ request('search') }}">
-            <button class="btn btn-outline-success" type="submit">Cari</button>
-        </form>
+        <input type="hidden" name="category" value="{{ request('category') }}">
+        <input class="form-control me-2" type="search" name="search" placeholder="Cari produk" value="{{ request('search') }}">
+        <button class="btn btn-outline-success" type="submit">Cari</button>
+    </form>
     </div>
 
     <div class="row">
@@ -97,13 +96,16 @@
         $('.add-to-cart').click(function() {
             var productId = $(this).data('id');
             $.post('{{ route('owner.products') }}', {
-                    product_id: productId,
-                    _token: '{{ csrf_token() }}'
-                },
-                function(response) {
-                    alert(response.message);
-                }, 'json');
+                product_id: productId,
+                _token: '{{ csrf_token() }}'
+            },
+            function(response) {
+                alert(response.message);
+            }, 'json');
         });
     });
 </script>
 @endsection
+</body>
+
+</html>

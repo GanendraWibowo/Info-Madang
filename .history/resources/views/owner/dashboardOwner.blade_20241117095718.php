@@ -96,7 +96,8 @@
     $(document).ready(function() {
         $('.add-to-cart').click(function() {
             var productId = $(this).data('id');
-            $.post('{{ route('owner.products') }}', {
+            $.post('{{ route('
+                owner.products ') }}', {
                     product_id: productId,
                     _token: '{{ csrf_token() }}'
                 },

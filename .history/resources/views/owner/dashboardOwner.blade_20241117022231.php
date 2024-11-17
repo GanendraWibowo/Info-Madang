@@ -4,7 +4,7 @@
 @include('owner.navbarOwner')
 <div class="container my-5">
     <h1 class="mt-5">Dashboard</h1>
-    <a href="{{ route('owner.products.create') }}" class="btn btn-success mb-3">Tambah Produk Baru</a>
+    <a href="{{ route('owner.products') }}" class="btn btn-success mb-3">Tambah Produk Baru</a>
     <a href="{{ route('owner.orders') }}" class="btn btn-primary mb-3">Pesanan</a>
     <a href="{{ route('logout') }}" class="btn btn-danger mb-3">Logout</a>
 
@@ -12,16 +12,15 @@
 
     @if(session('success'))
     <div class="alert alert-success">
-        {{ session('success') }}
+        {{ session('success') }}@extends('layouts.app')
     </div>
     @endif
 
     <div class="d-flex align-items-center mb-4">
         <div class="dropdown me-2">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Pilih Kategori
+            Pilih Kategori
             </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <ul class="dropdown-menu">
                 <li><a class="dropdown-item" href="{{ route('owner.products') }}">Semua Kategori</a></li>
                 @php
                 $categories = \App\Models\Product::distinct()->pluck('category');
@@ -32,7 +31,7 @@
             </ul>
         </div>
 
-        <form action="{{ route('owner.products') }}" method="GET" class="d-flex mb-4">
+        <form action="{{ route('owner.products') }}" method="GET" class="d-flex">
             <input type="hidden" name="category" value="{{ request('category') }}">
             <input class="form-control me-2" type="search" name="search" placeholder="Cari produk" value="{{ request('search') }}">
             <button class="btn btn-outline-success" type="submit">Cari</button>
@@ -54,7 +53,7 @@
                     <button class="btn btn-warning" data-toggle="modal" data-target="#editStockModal{{ $product->id }}">Edit Stok</button>
 
                     <!-- Redirect to Edit Product Page -->
-                    <a href="{{ route('owner.products.edit', ['id' => $product->id]) }}" class="btn btn-secondary">Edit Produk</a>
+                    <a href="{{ route('owner.updateProduct', ['id' => $product->id]) }}" class="btn btn-secondary">Edit Produk</a>
                 </div>
             </div>
         </div>
@@ -97,13 +96,16 @@
         $('.add-to-cart').click(function() {
             var productId = $(this).data('id');
             $.post('{{ route('owner.products') }}', {
-                    product_id: productId,
-                    _token: '{{ csrf_token() }}'
-                },
-                function(response) {
-                    alert(response.message);
-                }, 'json');
+                product_id: productId,
+                _token: '{{ csrf_token() }}'
+            },
+            function(response) {
+                alert(response.message);
+            }, 'json');
         });
     });
 </script>
 @endsection
+</body>
+
+</html>

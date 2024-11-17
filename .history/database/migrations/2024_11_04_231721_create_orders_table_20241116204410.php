@@ -17,7 +17,7 @@ return new class extends Migration
             $table->integer('table_number');
             $table->string('order_status')->default('unpayed');
             $table->integer('queue_number');
-            $table->integer('price')->nullable();
+            $table->ineteger('price')->nullable();
             $table->string('payment_method');
             $table->timestamps();
         });

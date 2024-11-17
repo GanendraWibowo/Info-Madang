@@ -28,7 +28,7 @@ class ProductController extends Controller
         $products = $query->paginate(10); // Adjust the number of items per page as needed
 
         // Pass the products to the view
-        return view('dashboard', compact('products'));
+        return view('dashboard.owner', compact('products'));
     }
 
     public function store(Request $request)

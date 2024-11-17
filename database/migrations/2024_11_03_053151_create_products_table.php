@@ -9,7 +9,7 @@ class CreateProductsTable extends Migration
     public function up()
     {
         Schema::create('products', function (Blueprint $table) {
-            $table->id();
+            $table->id(); // This creates an auto-incrementing BIGINT primary key
             $table->string('name');
             $table->text('description');
             $table->decimal('price', 10, 2);

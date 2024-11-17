@@ -14,8 +14,7 @@ class Product extends Model
         'description',
         'price',
         'image',
-        'category',
-        'stock'
+        'category'
     ];
 
     // Relasi ke OrderItem
