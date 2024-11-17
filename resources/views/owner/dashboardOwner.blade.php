@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-    @include('owner.navbarOwner')
     <div class="container my-5">
         <h1 class="mt-5">Dashboard</h1>
         <a href="{{ route('owner.products') }}" class="btn btn-success mb-3">Tambah Produk Baru</a>

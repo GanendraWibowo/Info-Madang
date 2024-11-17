@@ -3,7 +3,7 @@
 
 @section('content')
 <div class="container">
-    <h2 class="mt-4">Product Catalog</h2>
+    <h2 class="mt-4">Dashboard</h2>
 
     <!-- Category Filter -->
     <div class="mb-3">

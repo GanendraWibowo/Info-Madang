@@ -60,14 +60,25 @@ class OwnerController extends Controller
     // Mengupdate status pesanan pelanggan
     public function updateOrderStatus(Request $request, $orderId)
     {
+        // Validasi input untuk memastikan hanya nilai 'unpayed' atau 'payed' yang diterima
+        $validatedData = $request->validate([
+            'status' => 'required|in:unpayed,payed',
+        ]);
+
+        // Cari pesanan berdasarkan ID
         $order = Order::findOrFail($orderId);
-        $order->status = $request->input('status');
+
+        // Update kolom order_status
+        $order->order_status = $validatedData['status'];
         $order->save();
 
-        // Logika untuk notifikasi real-time (misal menggunakan Laravel Echo atau Pusher)
+        // Logika untuk notifikasi real-time (opsional, contoh dengan Laravel Echo atau Pusher)
+        // event(new OrderStatusUpdated($order));
 
-        return redirect()->route('owner.orders.queue')->with('success', 'Status pesanan diperbarui!');
+        // Redirect dengan pesan sukses
+        return redirect()->route('owner.orders.queue')->with('success', 'Status pesanan berhasil diperbarui!');
     }
+
 
     public function profile()
     {

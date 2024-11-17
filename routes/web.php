@@ -47,16 +47,14 @@ Route::middleware(['auth'])->group(function () {
     // Customer Routes
     // Route::get('/customer/dashboard', [OwnerController::class, 'showDashboardd'])->name('customer.dashboard');
     Route::get('/customer/menu/{category?}', [CustomerController::class, 'Products'])->name('catalog');
-    Route::post('/customer/add-to-cart/{productId}', [CustomerController::class, 'cart'])->name('customer.addToCart');
-    Route::get('/customer/checkout', [CustomerController::class, 'checkout'])->name('customer.checkout');
+    Route::post('/customer/add-to-cart/{productId}', [CustomerController::class, 'addToCart'])->name('customer.addToCart');
+    Route::get('/customer/checkout', action: [CustomerController::class, 'checkout'])->name('customer.checkout');
     Route::post('/customer/process-payment', [CustomerController::class, 'processPayment'])->name('customer.processPayment');
     Route::get('/customer/order-status/{orderId}', [CustomerController::class, 'orderStatus'])->name('customer.order.status');
     Route::get('/customer/profile', [CustomerController::class, 'profilee'])->name('customer.profile');
     Route::post('/logout', [CustomerController::class, 'logout'])->name('logout');
-
-
     // New routes for Cart and Order History
-    Route::get('/customer/cart', [CustomerController::class, 'cart'])->name('customer.cart');
+    Route::get('/customer/cart', [CustomerController::class, 'checkout'])->name('customer.cart');
     Route::get('/customer/orders', [CustomerController::class, 'orderHistory'])->name('customer.orders');
 
 });

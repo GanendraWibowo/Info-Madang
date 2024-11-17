@@ -3,15 +3,16 @@
 
 @section('content')
 <div class="container">
-    <h2 class="mt-4">Order History</h2>
+    <h2 class="mt-1 text-center">Order History</h2>
 
     @if($orders->isNotEmpty())
         @foreach($orders as $order)
             <div class="card mb-3">
                 <div class="card-body">
-                    <h5 class="card-title">Order #{{ $order->id }} - {{ $order->created_at->format('d-m-Y') }}</h5>
+                    <h5 class="card-title text-center" style="font-weight: bold;">Order #{{ $order->queue_number }} </h5>
+                    <h6>{{ $order->created_at->format('d-m-Y') }}</h6>
                     <p>Status: {{ $order->status }}</p>
-                    <p>Total: Rp. {{ number_format($order->total, 0, ',', '.') }}</p>
+                    <p>Total: Rp. {{ number_format($order->total_bayar, 0, ',', '.') }}</p>
                     <a href="{{ route('customer.order.status', $order->id) }}" class="btn btn-info">View Details</a>
                 </div>
             </div>
@@ -20,4 +21,5 @@
         <p>Belum ada transaksi</p>
     @endif
 </div>
+
 @endsection

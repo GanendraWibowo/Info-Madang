@@ -2,9 +2,25 @@
 
 @section('content')
 <div class="container">
-    <h1 class="mt-5">Product Catalog</h1>
+    <div class="card-body mt-1 d-flex justify-content-between align-items-center">
+        <div>
+            <h3 class="card-title">Selamat Datang {{ Auth::user()->name }}!</h3>
+        </div>
 
-    @if (Route::currentRouteName() === 'login.dashboard')
+        <!-- Cart -->
+        <div class="position-relative">
+            <a href="{{ route('customer.cart') }}" class="text-decoration-none">
+                <img src="{{ asset('img/pngegg.png') }}" class="cart-icon" alt="Cart" style="width: 2rem; height: 2rem;">
+                <span id="cart-badge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    0
+                </span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Product Cards -->
+    <div class="row mt-2">
+        @if (Route::currentRouteName() === 'login.dashboard')
         <!-- Category Filter Form -->
         <div class="form-row align-items-center mb-4">
             <div class="col-auto">
@@ -23,26 +39,15 @@
                     </ul>
                 </div>
             </div>
-
-            {{-- Uncomment if search is needed --}}
-            {{-- <div class="col">
-                <form action="{{ route('login.dashboard') }}" method="GET" class="form-inline">
-                    <input type="hidden" name="category" value="{{ request('category') }}">
-                    <input class="form-control me-2" type="search" name="search" placeholder="Cari produk" value="{{ request('search') }}">
-                    <button class="btn btn-outline-success" type="submit">Cari</button>
-                </form>
-            </div> --}}
         </div>
-    @endif
-
-    <!-- Product Cards -->
-    <div class="row">
+        @endif
         @foreach ($products as $product)
-            <div class="col-sm-12 col-md-6 col-lg-4">
+            <!-- Adjusted column class for 2-column layout on mobile -->
+            <div class="col-6 col-sm-12 col-md-6 col-lg-4">
                 <div class="card mb-4">
                     <img src="{{ asset('assets/' . $product->image) }}" class="card-img-top" alt="{{ $product->name }}">
                     <div class="card-body">
-                        <h5 class="card-title">{{ $product->name }}</h5>
+                        <h6 class="card-title">{{ $product->name }}</h6>
                         <p class="card-text">Price: Rp. {{ number_format($product->price, 0, ',', '.') }}</p>
                         <p class="card-text">Stock: {{ $product->stock }}</p>
                         <button class="btn btn-primary add-to-cart" data-id="{{ $product->id }}">+</button>
@@ -72,6 +77,16 @@
                 _token: '{{ csrf_token() }}'
             }, function (response) {
                 alert(response.message);
+
+                // Update cart badge
+                var cartCount = response.cartCount;  // Assuming your response returns the updated cart count
+                $('#cart-badge').text(cartCount);
+
+                if (cartCount > 0) {
+                    $('#cart-badge').addClass('d-block'); // Show the badge if cart has items
+                } else {
+                    $('#cart-badge').removeClass('d-block'); // Hide the badge if cart is empty
+                }
             }, 'json');
         });
     });
