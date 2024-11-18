@@ -1,127 +1,133 @@
 <?php
 
-
 namespace App\Http\Controllers;
-
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-
+use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Product::query();
+        try {
+            $query = Product::query();
 
+            if ($request->has('category') && $request->category) {
+                $query->where('category', $request->category);
+            }
 
-        // Filter by category if provided
-        if ($request->has('category') && $request->category) {
-            $query->where('category', $request->category);
+            if ($request->has('search') && $request->search) {
+                $query->where('name', 'like', '%' . $request->search . '%');
+            }
+
+            $products = $query->paginate(10);
+
+            return view('dashboard', compact('products'));
+        } catch (\Exception $e) {
+            Log::error('Error in ProductController@index: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat memuat produk.');
         }
-
-
-        // Search by product name if provided
-        if ($request->has('search') && $request->search) {
-            $query->where('name', 'like', '%' . $request->search . '%');
-        }
-
-
-        // Get the products with pagination
-        $products = $query->paginate(10); // Adjust the number of items per page as needed
-
-
-        // Pass the products to the view
-        return view('dashboard', compact('products'));
     }
-
 
     public function store(Request $request)
     {
-        // Validate the request
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'description' => 'required|string',
-            'price' => 'required|numeric',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // 2MB Max
-            'category' => 'required|in:makanan,minuman,snacks,PaHe', // Updated validation
-            'stock' => 'required|integer',
-        ]);
+        try {
+            $validator = Validator::make($request->all(), [
+                'name' => 'required|string|max:255',
+                'description' => 'required|string',
+                'price' => 'required|numeric|min:0',
+                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'category' => 'required|in:makanan,minuman,snacks,PaHe',
+                'stock' => 'required|integer|min:0',
+            ]);
 
+            if ($validator->fails()) {
+                return redirect()->back()
+                    ->withErrors($validator)
+                    ->withInput();
+            }
 
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
+            $imagePath = null;
+            if ($request->hasFile('image')) {
+                $imagePath = $request->file('image')->store('products', 'public');
+            }
+
+            Product::create([
+                'name' => $request->input('name'),
+                'description' => $request->input('description'),
+                'price' => $request->input('price'),
+                'image' => $imagePath,
+                'category' => $request->input('category'),
+                'stock' => $request->input('stock'),
+            ]);
+
+            return redirect()->route('dashboard.owner')->with('success', 'Product added successfully!');
+        } catch (\Exception $e) {
+            Log::error('Error in ProductController@store: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'Terjadi kesalahan saat menambah produk.')
+                ->withInput();
         }
-
-
-        // Handle image upload
-        $imagePath = null;
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('products', 'public'); // Store in public/products
-        }
-
-
-        // Create the product
-        Product::create([
-            'name' => $request->input('name'),
-            'description' => $request->input('description'),
-            'price' => $request->input('price'),
-            'image' => $imagePath,
-            'category' => $request->input('category'),
-            'stock' => $request->input('stock'),
-        ]);
-
-
-        // Redirect to the owner dashboard
-        return redirect()->route('dashboard.owner')->with('success', 'Product added successfully!');
     }
-
-
-    // public function edit($id)
-    // {
-    //     $product = Product::findOrFail($id);
-    //     $categories = ['makanan', 'minuman', 'snacks', 'PaHe']; // Updated categories
-    //     return view('owner.product_edit', compact('product', 'categories'));
-    // }
-
 
     public function updateProduct(Request $request, $id)
     {
-        $product = Product::findOrFail($id);
+        try {
+            $product = Product::findOrFail($id);
 
+            $validator = Validator::make($request->all(), [
+                'name' => 'required|string|max:255',
+                'price' => 'required|numeric|min:0',
+                'category' => 'required|in:makanan,minuman,snacks,PaHe',
+                'stock' => 'required|integer|min:0',
+            ]);
 
-        // Validate data
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'price' => 'required|numeric',
-            'category' => 'required|in:makanan,minuman,snacks,PaHe', // Updated validation
-            'stock' => 'required|integer',
-        ]);
+            if ($validator->fails()) {
+                return redirect()->back()
+                    ->withErrors($validator)
+                    ->withInput();
+            }
 
+            $product->update([
+                'name' => $request->name,
+                'price' => $request->price,
+                'category' => $request->category,
+                'stock' => $request->stock,
+            ]);
 
-        // Update product data
-        $product->update([
-            'name' => $request->name,
-            'price' => $request->price,
-            'category' => $request->category,
-            'stock' => $request->stock,
-        ]);
-
-
-        return redirect()->route('dashboard.owner')->with('success', 'Produk berhasil diupdate.');
+            return redirect()->route('dashboard.owner')->with('success', 'Produk berhasil diupdate.');
+        } catch (\Exception $e) {
+            Log::error('Error in ProductController@updateProduct: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat mengupdate produk.');
+        }
     }
-
 
     public function updateStock(Request $request, $id)
     {
-        $product = Product::findOrFail($id);
-        $product->stock = $request->input('stock');
-        $product->save();
+        try {
+            $product = Product::findOrFail($id);
+            
+            $validator = Validator::make($request->all(), [
+                'stock' => 'required|integer|min:0',
+            ]);
 
-        return redirect()->route('dashboard.owner')->with('success', 'Stock updated successfully!');
+            if ($validator->fails()) {
+                return redirect()->back()
+                    ->withErrors($validator)
+                    ->withInput();
+            }
+
+            $product->stock = $request->input('stock');
+            $product->save();
+
+            return redirect()->route('dashboard.owner')->with('success', 'Stock updated successfully!');
+        } catch (\Exception $e) {
+            Log::error('Error in ProductController@updateStock: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat mengupdate stok.');
+        }
     }
-
 }

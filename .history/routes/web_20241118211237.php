@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OwnerController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\CatalogController;
 use Illuminate\Support\Facades\Gate;
 
@@ -24,8 +23,10 @@ Route::get('/register', [LoginController::class, 'register'])->name('account.reg
 Route::post('/account/process-register', [LoginController::class, 'processRegister'])->name('account.processRegister');
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('account/dashboard/owner', [OwnerController::class, 'showDashboard'])->name('dashboard.owner');
+    Route::get('account/dashboard/owner', [DashboardController::class, 'ownerDashboard'])->name('dashboard.owner');
     Route::get('account/dashboard/customer', [DashboardController::class, 'customerDashboard'])->name('login.dashboard');
+    // Route::get('/checkout', [DashboardController::class, 'checkout'])->name('checkout');
+    // Route::post('/place-order', [DashboardController::class, 'placeOrder'])->name('place.order');
 });
 
 
@@ -39,14 +40,6 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/owner/product/store', [ProductController::class, 'store'])->name('owner.product.store');
         Route::put('/owner/products/{id}', [ProductController::class, 'updateProduct'])->name('owner.updateProduct');
         Route::put('/owner/products/{id}/stock', [ProductController::class, 'updateStock'])->name('owner.updateStock');
-
-        // Expense Routes
-        Route::get('/owner/expenses', [ExpenseController::class, 'index'])->name('owner.expenses.index');
-        Route::get('/owner/expenses/create', [ExpenseController::class, 'create'])->name('owner.expenses.create');
-        Route::post('/owner/expenses', [ExpenseController::class, 'store'])->name('owner.expenses.store');
-        Route::get('/owner/expenses/{expense}/edit', [ExpenseController::class, 'edit'])->name('owner.expenses.edit');
-        Route::put('/owner/expenses/{expense}', [ExpenseController::class, 'update'])->name('owner.expenses.update');
-        Route::delete('/owner/expenses/{expense}', [ExpenseController::class, 'destroy'])->name('owner.expenses.destroy');
 
         // Order Routes
         Route::get('/owner/products', [OwnerController::class, 'products'])->name('owner.products');
@@ -82,8 +75,4 @@ Route::middleware(['auth'])->group(function () {
         Route::patch('/cart/update', [CustomerController::class, 'updateCart'])->name('customer.updateCart');
         Route::get('/customer/orders', [CustomerController::class, 'orderHistory'])->name('customer.orders');
     });
-});
-
-Route::fallback(function () {
-    return view('errors.404');
 });

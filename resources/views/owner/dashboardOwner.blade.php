@@ -3,15 +3,54 @@
 @section('content')
     <div class="container my-5">
         <h1 class="mt-5">Dashboard</h1>
-        <a href="{{ route('owner.products') }}" class="btn btn-success mb-3">Tambah Produk Baru</a>
-        <a href="{{ route('owner.orders') }}" class="btn btn-primary mb-3">Pesanan</a>
-        <a href="{{ route('logout') }}" class="btn btn-danger mb-3">Logout</a>
+        
+        <div class="row mb-4">
+            <div class="col-md-6 mb-3">
+                <div class="card bg-primary text-white">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Pendapatan</h5>
+                        <h3 class="card-text">Rp {{ number_format($totalIncome, 0, ',', '.') }}</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="card bg-success text-white">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Pesanan</h5>
+                        <h3 class="card-text">{{ $totalOrders }}</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="card bg-info text-white">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Pengeluaran</h5>
+                        <h3 class="card-text">Rp {{ number_format($totalOutcome, 0, ',', '.') }}</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="card bg-warning text-white">
+                    <div class="card-body">
+                        <h5 class="card-title">Profit</h5>
+                        <h3 class="card-text">Rp {{ number_format($profit, 0, ',', '.') }}</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-        <h2 class="mt-4">Katalog Produk</h2>
+        <div class="mb-3">
+            <a href="{{ route('owner.products') }}" class="btn btn-success me-2">Tambah Produk Baru</a>
+            <a href="{{ route('owner.orders') }}" class="btn btn-primary me-2">Pesanan</a>
+            <a href="{{ route('logout') }}" class="btn btn-danger">Logout</a>
+        </div>
+
+        <h2 class="mt-4 mb-3">Katalog Produk</h2>
 
         @if(session('success'))
-            <div class="alert alert-success">
+            <div class="alert alert-success alert-dismissible fade show">
                 {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
 
@@ -30,25 +69,29 @@
                     @endforeach
                 </ul>
             </div>
-
-            {{-- <form action="{{ route('owner.products') }}" method="GET" class="d-flex">
-                <input type="hidden" name="category" value="{{ request('category') }}">
-                <input class="form-control me-2" type="search" name="search" placeholder="Cari produk" value="{{ request('search') }}">
-                <button class="btn btn-outline-success" type="submit">Cari</button>
-            </form> --}}
         </div>
 
         <div class="row">
             @foreach($products as $product)
-                <div class="col-sm-12 col-md-6 col-lg-4">
-                    <div class="card mb-4">
-                        <img src="{{ asset($product->image) }}" class="card-img-top" alt="{{ $product->name }}">
+                <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100">
+                        @if($product->image)
+                            @if(Str::startsWith($product->image, 'http'))
+                                <img src="{{ $product->image }}" class="card-img-top" alt="{{ $product->name }}" style="height: 200px; object-fit: cover;">
+                            @else
+                                <img src="{{ asset('storage/' . $product->image) }}" class="card-img-top" alt="{{ $product->name }}" style="height: 200px; object-fit: cover;">
+                            @endif
+                        @else
+                            <img src="{{ asset('images/default-product.jpg') }}" class="card-img-top" alt="{{ $product->name }}" style="height: 200px; object-fit: cover;">
+                        @endif
                         <div class="card-body">
                             <h5 class="card-title">{{ $product->name }}</h5>
                             <p class="card-text">Harga: Rp {{ number_format($product->price, 0, ',', '.') }}</p>
                             <p class="card-text">Stok: {{ $product->stock }}</p>
-                            <a href="{{ route('owner.updateStock', ['id' => $product->id]) }}" class="btn btn-warning">Edit Stok</a>
-                            <a href="{{ route('owner.updateProduct', ['id' => $product->id]) }}" class="btn btn-secondary">Edit Produk</a>
+                            <div class="d-flex gap-2">
+                                <a href="{{ route('owner.updateStock', ['id' => $product->id]) }}" class="btn btn-warning">Edit Stok</a>
+                                <a href="{{ route('owner.updateProduct', ['id' => $product->id]) }}" class="btn btn-secondary">Edit Produk</a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -62,12 +105,13 @@
         $(document).ready(function () {
             $('.add-to-cart').click(function () {
                 var productId = $(this).data('id');
-                $.post('{{ route('owner.products') }}', { product_id: productId, _token: '{{ csrf_token() }}' }, function (response) {
+                $.post('{{ route('owner.products') }}', { 
+                    product_id: productId, 
+                    _token: '{{ csrf_token() }}' 
+                }, function (response) {
                     alert(response.message);
                 }, 'json');
             });
         });
     </script>
 @endsection
-</body>
-</html>

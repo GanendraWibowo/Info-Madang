@@ -5,7 +5,7 @@
     <div class="container mt-5">
         <h2>Laporan Penjualan Mingguan</h2>
 
-        <p>Total Pendapatan: {{ number_format($revenue, 2) }}</p>
+        <p>Total Pendapatan: {{ number_format($totalIncome, 2) }}</p>
         <p>Total Pesanan: {{ $orderCount }}</p>
 
         @if($transactions->count() > 0)

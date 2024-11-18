@@ -18,9 +18,9 @@ return new class extends Migration
             $table->string('order_status')->default('unpayed');
             $table->integer('queue_number');
             $table->string('payment_method');
+            $table->string('status')->default('sedang dibuat'); // Add this line to include the status column
             $table->timestamps();
         });
-
     }
 
     /**
