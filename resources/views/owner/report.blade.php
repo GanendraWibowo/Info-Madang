@@ -24,7 +24,7 @@
                             <tr>
                                 <td>{{ $transaction->id }}</td>
                                 <td>{{ $item->product->name }}</td> <!-- Assuming 'product' relationship is defined in OrderItem -->
-                                <td>{{ $transaction->payment_method }}</td>
+                                <td>{{ ucfirst($transaction->payment_method) }}</td>
                                 <td>{{ $transaction->created_at->format('d-m-Y') }}</td>
                             </tr>
                         @endforeach

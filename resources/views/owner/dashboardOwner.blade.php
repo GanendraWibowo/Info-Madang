@@ -31,11 +31,11 @@
                 </ul>
             </div>
 
-            <form action="{{ route('owner.products') }}" method="GET" class="d-flex">
+            {{-- <form action="{{ route('owner.products') }}" method="GET" class="d-flex">
                 <input type="hidden" name="category" value="{{ request('category') }}">
                 <input class="form-control me-2" type="search" name="search" placeholder="Cari produk" value="{{ request('search') }}">
                 <button class="btn btn-outline-success" type="submit">Cari</button>
-            </form>
+            </form> --}}
         </div>
 
         <div class="row">
@@ -47,7 +47,6 @@
                             <h5 class="card-title">{{ $product->name }}</h5>
                             <p class="card-text">Harga: Rp {{ number_format($product->price, 0, ',', '.') }}</p>
                             <p class="card-text">Stok: {{ $product->stock }}</p>
-                            <button class="btn btn-primary add-to-cart" data-id="{{ $product->id }}">+</button>
                             <a href="{{ route('owner.updateStock', ['id' => $product->id]) }}" class="btn btn-warning">Edit Stok</a>
                             <a href="{{ route('owner.updateProduct', ['id' => $product->id]) }}" class="btn btn-secondary">Edit Produk</a>
                         </div>

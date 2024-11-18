@@ -65,20 +65,22 @@ class OwnerController extends Controller
     // Menampilkan halaman owner_report
     public function report()
     {
-        // Hitung pendapatan
-        $revenue = Order::sum('total_bayar'); // Sum of 'total_bayar' field for all orders
+        // Hitung pendapatan hanya dari pesanan dengan status 'selesai'
+        $revenue = Order::where('status', 'selesai')->sum('total_bayar');
 
-        // Hitung jumlah pesanan
-        $orderCount = Order::count(); // Total number of orders
+        // Hitung jumlah pesanan dengan status 'selesai'
+        $orderCount = Order::where('status', 'selesai')->count();
 
-        // Fetch transactions (orders)
-        $transactions = Order::with('user', 'orderItems.product') // Assuming orders have user and products relationships
+        // Fetch transactions (orders) dengan status 'selesai'
+        $transactions = Order::with('user', 'orderItems.product') // Relationships assumed: 'user' and 'orderItems.product'
+            ->where('status', 'selesai') // Hanya ambil pesanan dengan status 'selesai'
             ->whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()]) // Filter by this week's transactions
             ->get();
 
         // Pass the data to the view
         return view('owner.report', compact('revenue', 'orderCount', 'transactions'));
     }
+
 
 
     // Menghitung total pengeluaran (contoh)
