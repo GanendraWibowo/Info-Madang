@@ -42,6 +42,7 @@
         <div class="mb-3">
             <a href="{{ route('owner.products') }}" class="btn btn-success me-2">Tambah Produk Baru</a>
             <a href="{{ route('owner.orders') }}" class="btn btn-primary me-2">Pesanan</a>
+            <a href="{{ route('owner.expenses.index') }}" class="btn btn-info me-2">Kelola Pengeluaran</a>
             <a href="{{ route('logout') }}" class="btn btn-danger">Logout</a>
         </div>
 
