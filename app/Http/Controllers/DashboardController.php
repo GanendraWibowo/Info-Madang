@@ -17,7 +17,7 @@ class DashboardController extends Controller
         $ordersQueue = []; // Ganti dengan model untuk mengambil data antrian
         $purchaseHistory = []; // Ganti dengan model untuk mengambil data riwayat pembelian
         $revenue = 0; // Ganti dengan logika untuk menghitung pendapatan
-        $products = Product::all();
+        $products = Product::paginate(10); // Changed from all() to paginate(10)
         $orders = Order::with('user')->get();
         return view('owner.dashboardOwner', compact('products', 'orders'));
     }

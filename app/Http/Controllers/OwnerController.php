@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\Order;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -11,37 +12,77 @@ use Illuminate\Support\Facades\Validator;
 
 class OwnerController extends Controller
 {
-    // Menampilkan halaman owner_product
+    // Menampilkan dashboard owner dengan semua produk
+    public function showDashboard(Request $request)
+    {
+        $query = Product::query();
+
+        // Search by product name if provided
+        if ($request->has('search') && $request->search) {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+
+        // Get the products with pagination
+        $products = $query->paginate(10); // Adjust the number of items per page as needed
+
+        // Initialize variables with default values
+        $totalIncome = 0;
+        $totalOrders = 0;
+        $totalOutcome = 0;
+        $profit = 0;
+
+        // Calculate statistics only if there are orders
+        if (Order::count() > 0) {
+            // Calculate total income, total orders, total outcomes, and profit
+            $totalIncome = Order::where('status', '!=', 'cancelled')->sum('total');
+            $totalOrders = Order::where('status', '!=', 'cancelled')->count();
+            $totalOutcome = $this->calculateTotalOutcomes();
+            $profit = $totalIncome - $totalOutcome;
+        }
+
+        // Pass the paginated products and statistics to the view
+        return view('owner.dashboardOwner', compact(
+            'products',
+            'totalIncome',
+            'totalOrders',
+            'totalOutcome',
+            'profit'
+        ));
+    }
+
+    // Menampilkan halaman untuk menambah produk
     public function products()
     {
-        $products = Product::all();
+        // You can still fetch products if needed
+        $products = Product::all(); // Fetch all products
+
         return view('owner.products', compact('products'));
     }
 
-    // Menampilkan dashboard owner
-    public function showDashboard()
+    // Menyimpan produk baru
+    public function store(Request $request)
     {
-        // Mengambil kategori unik dari produk
-        $category = Product::distinct()->pluck('category');
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'price' => 'required|numeric',
+            'stock' => 'required|integer',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'category_id' => 'required|exists:categories,id', // Ensure category exists
+        ]);
 
-        // Mengambil semua produk
-        $products = Product::all();
+        // Handle file upload
+        $imagePath = $request->file('image')->store('images/products', 'public');
 
-        // Menghitung total pendapatan
-        $totalIncome = Order::sum('price'); // Ganti 'price' dengan field yang sesuai di model Order
+        // Create the product
+        Product::create([
+            'name' => $request->name,
+            'price' => $request->price,
+            'stock' => $request->stock,
+            'image' => $imagePath,
+            'category_id' => $request->category_id, // Use category_id instead of category
+        ]);
 
-        // Menghitung total pesanan
-        $totalOrders = Order::count();
-
-        // Menghitung total outcomes (biaya tetap atau variabel)
-        // Misalnya, Anda bisa menambahkan metode untuk menghitung pengeluaran
-        $totalOutcome = $this->calculateTotalOutcomes(); // Ganti dengan metode yang sesuai
-
-        // Menghitung keuntungan
-        $profit = $totalIncome - $totalOutcome;
-
-        // Mengirimkan kategori, produk, dan statistik ke view
-        return view('dashboardOwner', compact('category', 'products', 'totalIncome', 'totalOrders', 'totalOutcome', 'profit'));
+        return redirect()->route('owner.dashboardOwner')->with('success', 'Product added successfully!');
     }
 
     // Menampilkan halaman owner_order
@@ -63,8 +104,6 @@ class OwnerController extends Controller
     private function calculateTotalOutcomes()
     {
         // Logika untuk menghitung total pengeluaran
-        // Misalnya, jika Anda memiliki tabel pengeluaran
-        // return Expense::sum('amount'); // Ganti dengan model dan field yang sesuai
         return 500000; // Contoh nilai tetap, ganti dengan logika yang sesuai
     }
 
@@ -85,8 +124,6 @@ class OwnerController extends Controller
         $order = Order::findOrFail($orderId);
         $order->status = $request->input('status');
         $order->save();
-
-        // Logika untuk notifikasi real-time (misal menggunakan Laravel Echo atau Pusher)
 
         return redirect()->route('owner.orders.queue')->with('success', 'Status pesanan diperbarui!');
     }

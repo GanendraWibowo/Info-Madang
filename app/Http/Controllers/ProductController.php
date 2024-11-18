@@ -10,26 +10,6 @@ use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
-    public function index(Request $request)
-    {
-        $query = Product::query();
-
-        // Filter by category if provided
-        if ($request->has('category') && $request->category) {
-            $query->where('category', $request->category);
-        }
-
-        // Search by product name if provided
-        if ($request->has('search') && $request->search) {
-            $query->where('name', 'like', '%' . $request->search . '%');
-        }
-
-        // Get the products with pagination
-        $products = $query->paginate(10); // Adjust the number of items per page as needed
-
-        // Pass the products to the view
-        return view('dashboard', compact('products'));
-    }
 
     public function store(Request $request)
     {
