@@ -11,10 +11,14 @@ class Order extends Model
 
     protected $fillable = [
         'user_id',
-        'status',
         'queue_number',
-        'payment_method'
+        'order_status',
+        'table_number',
+        'payment_method',
+        'total_bayar',
+        'status'
     ];
+
 
     // Relasi ke user (pelanggan yang membuat pesanan)
     public function user()

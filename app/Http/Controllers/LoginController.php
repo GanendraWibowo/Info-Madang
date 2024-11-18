@@ -95,12 +95,12 @@ class LoginController extends Controller
         }
 
         // Jika validasi berhasil, simpan pengguna baru
-        $user = new User();
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->password = Hash::make($request->password); // Hash password
-        $user->role = 'Pelanggan'; // Sesuaikan dengan peran default Anda
-        $user->save();
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'role' => 'pelanggan', // Peran default
+        ]);
 
         \Log::info('User registered successfully', ['email' => $user->email]);
 

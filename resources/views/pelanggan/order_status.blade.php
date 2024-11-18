@@ -3,13 +3,14 @@
 
 @section('content')
 <div class="container">
-    <h2 class="mt-4">Order Status</h2>
+    <h2 class="mt-4 text-center">Order Status</h2>
 
     <div class="card">
         <div class="card-body">
-            <h5 class="card-title">Order #{{ $order->id }}</h5>
+            <h5 class="card-title text-center" style="font-weight: bold;">Order #{{ $order->queue_number }}</h5>
             <p>Status: {{ $order->status }}</p>
-            <p>Total: Rp. {{ number_format($order->total, 0, ',', '.') }}</p>
+            <p>Status Pembayaran: {{ $order->order_status }}</p>
+            <p>Total: Rp. {{ number_format($order->total_bayar, 0, ',', '.') }}</p>
 
             <h5>Items</h5>
             <ul>

@@ -1,10 +1,12 @@
-
-@extends('app')
+@extends ('layouts.app')
 
 @section('content')
 <div class="main-content">
     <div class="container mt-5">
         <h2>Laporan Penjualan Mingguan</h2>
+
+        <p>Total Pendapatan: {{ number_format($revenue, 2) }}</p>
+        <p>Total Pesanan: {{ $orderCount }}</p>
 
         @if($transactions->count() > 0)
             <table class="table table-bordered">
@@ -18,17 +20,19 @@
                 </thead>
                 <tbody>
                     @foreach($transactions as $transaction)
-                        <tr>
-                            <td>{{ $transaction->id }}</td>
-                            <td>{{ $transaction->product->name }}</td>
-                            <td>{{ $transaction->payment_method }}</td>
-                            <td>{{ $transaction->created_at->format('d-m-Y H:i') }}</td>
-                        </tr>
+                        @foreach($transaction->orderItems as $item)
+                            <tr>
+                                <td>{{ $transaction->id }}</td>
+                                <td>{{ $item->product->name }}</td> <!-- Assuming 'product' relationship is defined in OrderItem -->
+                                <td>{{ ucfirst($transaction->payment_method) }}</td>
+                                <td>{{ $transaction->created_at->format('d-m-Y') }}</td>
+                            </tr>
+                        @endforeach
                     @endforeach
                 </tbody>
             </table>
         @else
-            <p>Tidak ada transaksi dalam satu minggu terakhir.</p>
+            <p>Tidak ada transaksi minggu ini.</p>
         @endif
     </div>
 </div>

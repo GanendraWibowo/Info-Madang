@@ -1,4 +1,4 @@
-@extends('app')
+@extends('layouts.app')
 
 @section('content')
 <div class="container">
@@ -7,10 +7,10 @@
             <div class="card">
                 <div class="card-body">
                     <h2 class="card-title">Selamat Datang!</h2>
-                    <p class="card-text">Selamat datang, {{ Auth::user()->username }}!</p>
+                    <p class="card-text">Selamat datang, {{ Auth::user()->name }}!</p>
                     <hr>
                     <h5 class="card-subtitle mb-2 text-muted">Informasi Akun</h5>
-                    <p>Nama Pengguna: {{ Auth::user()->username }}</p>
+                    <p>Nama Pengguna: {{ Auth::user()->name }}</p>
                     <p>Role: {{ Auth::user()->role }}</p>
                 </div>
             </div>

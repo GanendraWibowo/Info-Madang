@@ -73,76 +73,118 @@ class CustomerController extends Controller
     // Tambah produk ke keranjang
     public function addToCart(Request $request, $productId)
     {
-        $product = Product::findOrFail($productId);
+        // Get the product
+        $product = \App\Models\Product::findOrFail($productId);
 
-        // Check if the product is out of stock
-        if ($product->stock <= 0) {
-            return response()->json(['message' => 'Produk ini habis dan tidak dapat ditambahkan ke keranjang.'], 400);
-        }
-
+        // Get current cart from session
         $cart = session()->get('cart', []);
 
-        // Check if the product exists in the cart and increment quantity if stock allows
+        // Check if the product already exists in the cart
         if (isset($cart[$productId])) {
-            if ($cart[$productId]['quantity'] < $product->stock) {
-                $cart[$productId]['quantity']++;
-            } else {
-                return response()->json(['message' => 'Stok tidak mencukupi untuk menambah produk ke keranjang.'], 400);
-            }
+            // Increment the quantity
+            $cart[$productId]['quantity']++;
         } else {
+            // Add product to cart with quantity 1
             $cart[$productId] = [
-                "name" => $product->name,
-                "quantity" => 1,
-                "price" => $product->price
+                'name' => $product->name,
+                'price' => $product->price,
+                'quantity' => 1,
+                'image' => $product->image,
             ];
         }
 
+        // Save the updated cart in the session
         session()->put('cart', $cart);
-        return response()->json(['message' => 'Item berhasil ditambahkan ke keranjang!']);
+
+        // Return updated cart count
+        $cartCount = count($cart);
+
+        return response()->json([
+            'message' => 'Produk berhasil ditambahkan ke keranjang!',
+            'cartCount' => $cartCount,
+        ]);
     }
 
 
     // Checkout dan tampilkan total
     public function checkout()
     {
-        $cart = session()->get('cart');
-        $total = array_reduce($cart, fn($sum, $item) => $sum + ($item['price'] * $item['quantity']), 0);
+        $cart = session()->get('cart', []); // Provide a default empty array if cart is null
+        $total_bayar = array_reduce($cart, fn($sum, $item) => $sum + ($item['price'] * $item['quantity']), 0);
 
-        return view('customer.checkout', compact('cart', 'total'));
+        return view('pelanggan.checkout', compact('cart', 'total_bayar'));
     }
+    
+    public function updateCart(Request $request)
+    {
+        $cart = session()->get('cart', []);
+
+        if ($request->action === 'decrease' && isset($cart[$request->product_id])) {
+            // Kurangi kuantitas produk
+            $cart[$request->product_id]['quantity']--;
+
+            // Hapus produk dari keranjang jika kuantitasnya 0
+            if ($cart[$request->product_id]['quantity'] <= 0) {
+                unset($cart[$request->product_id]);
+            }
+
+            session()->put('cart', $cart);
+        }
+
+        return redirect()->route('customer.checkout')->with('success', 'Cart updated successfully.');
+    }
+
+
 
     // Proses pembayaran
     public function processPayment(Request $request)
     {
         $cart = session()->get('cart');
         if (!$cart) {
-            return redirect()->route('customer.menu')->with('error', 'Keranjang kosong!');
+            return redirect()->route('customer.cart')->with('error', 'Keranjang kosong!');
         }
 
-        $order = new Order();
-        $order->user_id = Auth::id();
-        $order->total = $request->input('total');
-        $order->queue_number = Order::max('queue_number') + 1; // Tambah nomor antrian
-        $order->status = 'sedang dibuat';
-        $order->save();
+        // Hitung total pembayaran
+        $total_bayar = array_reduce($cart, fn($sum, $item) => $sum + ($item['price'] * $item['quantity']), 0);
 
+        // Buat order
+        $order = Order::create([
+            'user_id' => Auth::id(),
+            'total_bayar' => $total_bayar,
+            'queue_number' => Order::max('queue_number') + 1,
+            'status' => 'sedang dibuat',
+            'table_number' => $request->input('table_number') ?? 'default_value',
+            'payment_method' => $request->input('payment_method'), // Add this line to pass the selected payment method
+        ]);
+
+        // Proses setiap item di keranjang
         foreach ($cart as $productId => $item) {
+            // Simpan item ke OrderItem
             OrderItem::create([
                 'order_id' => $order->id,
                 'product_id' => $productId,
                 'quantity' => $item['quantity']
             ]);
+
+            // Kurangi stok produk
+            $product = Product::find($productId);
+            if ($product) {
+                $product->decrement('stock', $item['quantity']);
+            }
         }
 
+        // Kosongkan keranjang setelah pembayaran
         session()->forget('cart');
+
         return redirect()->route('customer.order.status', $order->id)->with('success', 'Pesanan berhasil diproses!');
     }
+
 
     // Melihat status pesanan pelanggan
     public function orderStatus($orderId)
     {
         $order = Order::where('id', $orderId)->where('user_id', Auth::id())->firstOrFail();
-        return view('customer.order_status', compact('order'));
+        return view('pelanggan.order_status', compact('order'));
     }
 
     // Melihat cart
