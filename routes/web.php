@@ -7,6 +7,7 @@ use App\Http\Controllers\OwnerController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CatalogController;
+use Illuminate\Support\Facades\Gate;
 
 // Halaman utama
 Route::get('/', function () {
@@ -29,19 +30,33 @@ Route::middleware(['auth'])->group(function () {
 });
 
 
-Route::middleware(['auth', 'can:owner-access'])->group(function () {
+Route::middleware(['auth'])->group(function () {
+    // Owner Dashboard
     Route::get('/owner/dashboard', [OwnerController::class, 'showDashboard'])->name('owner.dashboard');
+
+    // Product Routes
     Route::get('/owner/product', [OwnerController::class, 'products'])->name('owner.products');
-    Route::get('/owner/order', [OwnerController::class, 'order'])->name('owner.orders');
-    Route::get('/owner/report', [OwnerController::class, 'report'])->name('owner.reports');
-    Route::get('/owner/orders-queue', [OwnerController::class, 'orderQueue'])->name('owner.orders.queue');
-    Route::post('/owner/update-order-status/{orderId}', [OwnerController::class, 'updateOrderStatus'])->name('owner.updateOrderStatus');
-    Route::get('/owner/profile', [OwnerController::class, 'profileOwner'])->name('owner.profile');
-    Route::post('/owner/updatePassword', [OwnerController::class, 'updatePassword'])->name('owner.updatePassword');
-    Route::post('/logout', [OwnerController::class, 'logout'])->name('logout');
+    Route::post('/owner/product/store', [ProductController::class, 'store'])->name('owner.product.store');
     Route::put('/owner/products/{id}', [ProductController::class, 'updateProduct'])->name('owner.updateProduct');
     Route::put('/owner/products/{id}/stock', [ProductController::class, 'updateStock'])->name('owner.updateStock');
+
+    // Order Routes
+    Route::get('/owner/order', [OwnerController::class, 'order'])->name('owner.orders');
+    Route::get('/owner/orders-queue', [OwnerController::class, 'orderQueue'])->name('owner.orders.queue');
+    Route::put('/owner/update-order-status/{orderId}', [OwnerController::class, 'updateOrderStatus'])->name('orders.updateOrderStatus');
+
+    // Reports
+    Route::get('/owner/report', [OwnerController::class, 'report'])->name('owner.reports');
+
+    // Profile Management
+    Route::get('/owner/profile', [OwnerController::class, 'profileOwner'])->name('owner.profile');
+    Route::post('/owner/updatePassword', [OwnerController::class, 'updatePassword'])->name('owner.updatePassword');
+
+    // Logout Route
+    Route::post('/logout', [OwnerController::class, 'logout'])->name('logout'); // assuming AuthController handles logout
 });
+
+
 
 Route::middleware(['auth'])->group(function () {
     // Customer Routes
@@ -55,6 +70,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/logout', [CustomerController::class, 'logout'])->name('logout');
     // New routes for Cart and Order History
     Route::get('/customer/cart', [CustomerController::class, 'checkout'])->name('customer.cart');
+    Route::patch('/cart/update', [CustomerController::class, 'updateCart'])->name('customer.updateCart');
     Route::get('/customer/orders', [CustomerController::class, 'orderHistory'])->name('customer.orders');
 
 });

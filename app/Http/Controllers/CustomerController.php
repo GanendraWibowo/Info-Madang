@@ -114,6 +114,25 @@ class CustomerController extends Controller
 
         return view('pelanggan.checkout', compact('cart', 'total_bayar'));
     }
+    
+    public function updateCart(Request $request)
+    {
+        $cart = session()->get('cart', []);
+
+        if ($request->action === 'decrease' && isset($cart[$request->product_id])) {
+            // Kurangi kuantitas produk
+            $cart[$request->product_id]['quantity']--;
+
+            // Hapus produk dari keranjang jika kuantitasnya 0
+            if ($cart[$request->product_id]['quantity'] <= 0) {
+                unset($cart[$request->product_id]);
+            }
+
+            session()->put('cart', $cart);
+        }
+
+        return redirect()->route('customer.checkout')->with('success', 'Cart updated successfully.');
+    }
 
 
 

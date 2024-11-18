@@ -1,7 +1,7 @@
 @extends('layouts.apel')
 
 @section('content')
-<div class="container ">
+<div class="container">
     <h2 class="mt-1 text-center">Checkout</h2>
 
     @if(!empty($cart))
@@ -13,6 +13,15 @@
                             <h5 class="card-title">{{ $item['name'] }}</h5>
                             <p class="card-text">Price: Rp. {{ number_format($item['price'], 0, ',', '.') }}</p>
                             <p class="card-text">Quantity: {{ $item['quantity'] }}</p>
+
+                            <!-- Button Kurangi Quantity -->
+                            <form action="{{ route('customer.updateCart') }}" method="POST" class="d-inline">
+                                @csrf
+                                @method('PATCH')
+                                <input type="hidden" name="product_id" value="{{ $productId }}">
+                                <input type="hidden" name="action" value="decrease">
+                                <button type="submit" class="btn btn-warning btn-sm">Kurangi</button>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -20,18 +29,18 @@
         </div>
         <h4>Total: Rp. {{ number_format($total_bayar, 0, ',', '.') }}</h4>
 
-        <!-- Add Table Number Input -->
+        <!-- Form untuk Konfirmasi Pembayaran -->
         <form action="{{ route('customer.processPayment') }}" method="POST">
             @csrf
             <input type="hidden" name="total" value="{{ $total_bayar }}">
             
-            <!-- Table Number Input -->
+            <!-- Input Nomor Meja -->
             <div class="form-group mt-2">
                 <label for="table_number">Table Number</label>
                 <input type="text" name="table_number" id="table_number" class="form-control" required>
             </div>
 
-            <!-- Payment Method Options -->
+            <!-- Metode Pembayaran -->
             <div class="form-group mt-2">
                 <label for="payment_method">Payment Method</label>
                 <select name="payment_method" id="payment_method" class="form-control" required>

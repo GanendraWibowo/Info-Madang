@@ -80,7 +80,7 @@
 
                 // Update cart badge
                 var cartCount = response.cartCount;  // Assuming your response returns the updated cart count
-                $('#cart-badge').text(cartCount);
+                $('#cart-badge').text(response.cartCount).addClass('d-block');
 
                 if (cartCount > 0) {
                     $('#cart-badge').addClass('d-block'); // Show the badge if cart has items

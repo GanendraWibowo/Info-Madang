@@ -12,10 +12,11 @@ class Order extends Model
     protected $fillable = [
         'user_id',
         'queue_number',
-        'status',
+        'order_status',
         'table_number',
         'payment_method',
-        'total_bayar'
+        'total_bayar',
+        'status'
     ];
 
 
