@@ -43,9 +43,8 @@
             <a href="{{ route('owner.products') }}" class="btn btn-success me-2">Tambah Produk Baru</a>
             <a href="{{ route('owner.orders') }}" class="btn btn-primary me-2">Pesanan</a>
             <a href="{{ route('owner.expenses.index') }}" class="btn btn-info me-2">Kelola Pengeluaran</a>
-            <form action="{{ route('logout') }}" method="POST" style="display: inline;">
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                 @csrf
-                <button type="submit" class="btn btn-danger">Logout</button>
             </form>
         </div>
 
@@ -96,11 +95,6 @@
                             <div class="d-flex gap-2">
                                 <a href="{{ route('owner.updateStock', ['id' => $product->id]) }}" class="btn btn-warning">Ubah Stok</a>
                                 <a href="{{ route('owner.updateProduct', ['id' => $product->id]) }}" class="btn btn-secondary">Ubah Produk</a>
-                                <form action="{{ route('owner.deleteProduct', ['id' => $product->id]) }}" method="POST" style="display: inline;" onsubmit="return confirm('Apakah Anda yakin ingin menghapus produk ini?');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger">Hapus Produk</button>
-                                </form>
                             </div>
                         </div>
                     </div>

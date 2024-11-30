@@ -89,7 +89,7 @@
                         </div>
                     @endif
                     <button type="submit" class="btn">Register</button>
-                    <p class="social-text">Sudah punya akun? <span id="showSignIn" class="text-teal-600 cursor-pointer">Masuk!</span></p>
+                    <p class="social-text">Sudah punya akun? <span id="showSignIn" class="text-teal-600 cursor-pointer">Masuk</span></p>
                 </form>
             </div>
         </div>

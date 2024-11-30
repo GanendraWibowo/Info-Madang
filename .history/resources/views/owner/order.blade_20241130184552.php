@@ -28,7 +28,7 @@
                        <td>{{ $order->order_status }}</td>
                        <td>{{ $order->queue_number }}</td>
                        <td>{{ ucfirst($order->payment_method) }}</td>
-                       <td>Rp {{ number_format($order->total_bayar, 0, ',', '.') }}</td>
+                       <td>Rp {{ number_format($order->total_price, 0, ',', '.') }}</td>
                        <td>{{ $order->created_at->format('Y-m-d H:i') }}</td>
                        <td>
                            <form action="{{ route('orders.updateOrderStatus', $order->id) }}" method="POST">

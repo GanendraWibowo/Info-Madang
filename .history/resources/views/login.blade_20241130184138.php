@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ asset('css/login.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/Masuk.css') }}">
     <title>Masuk / Daftar</title>
 </head>
 
@@ -25,19 +25,19 @@
                         <i class="fas fa-lock"></i>
                         <input type="password" name="password" placeholder="Masukkan password" required />
                     </div>
-                    @if ($errors->has('login_error'))
+                    @if ($errors->has('Masuk_error'))
                         <div class="alert alert-danger">
-                            <p>{{ $errors->first('login_error') }}</p>
+                            <p>{{ $errors->first('Masuk_error') }}</p>
                         </div>
                     @endif
-                    <button type="submit" class="btn solid">Login</button>
+                    <button type="submit" class="btn solid">Masuk</button>
                     <p class="social-text">Belum punya akun? <span id="showSignUp" class="text-teal-600 cursor-pointer">Daftar!</span></p>
                 </form>
 
                 <!-- Form Sign Up -->
-                <form action="{{ route('account.processRegister') }}" method="POST" class="sign-up-form">
+                <form action="{{ route('account.processDaftar') }}" method="POST" class="sign-up-form">
                     <img src="{{ asset('img/INFO_MADANG.png') }}" class="image-title" alt="Logo">
-                    <h2 class="title">Daftar</h2>
+                    <h2 class="title">Sign Up</h2>
                     @csrf
                     <div class="input-field">
                         <i class="fas fa-user"></i>
@@ -88,8 +88,8 @@
                             <p>{{ session('sukses') }}</p>
                         </div>
                     @endif
-                    <button type="submit" class="btn">Register</button>
-                    <p class="social-text">Sudah punya akun? <span id="showSignIn" class="text-teal-600 cursor-pointer">Masuk!</span></p>
+                    <button type="submit" class="btn">Daftar</button>
+                    <p class="social-text">Sudah punya akun? <span id="showSignIn" class="text-teal-600 cursor-pointer">Masuk</span></p>
                 </form>
             </div>
         </div>

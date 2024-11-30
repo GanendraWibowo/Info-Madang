@@ -31,13 +31,13 @@
                         </div>
                     @endif
                     <button type="submit" class="btn solid">Login</button>
-                    <p class="social-text">Belum punya akun? <span id="showSignUp" class="text-teal-600 cursor-pointer">Daftar!</span></p>
+                    <p class="social-text">Belum punya akun? <span id="showSignUp" class="text-teal-600 cursor-pointer">Sign Up</span></p>
                 </form>
 
                 <!-- Form Sign Up -->
                 <form action="{{ route('account.processRegister') }}" method="POST" class="sign-up-form">
                     <img src="{{ asset('img/INFO_MADANG.png') }}" class="image-title" alt="Logo">
-                    <h2 class="title">Daftar</h2>
+                    <h2 class="title">Sign Up</h2>
                     @csrf
                     <div class="input-field">
                         <i class="fas fa-user"></i>
@@ -89,7 +89,7 @@
                         </div>
                     @endif
                     <button type="submit" class="btn">Register</button>
-                    <p class="social-text">Sudah punya akun? <span id="showSignIn" class="text-teal-600 cursor-pointer">Masuk!</span></p>
+                    <p class="social-text">Sudah punya akun? <span id="showSignIn" class="text-teal-600 cursor-pointer">Login</span></p>
                 </form>
             </div>
         </div>

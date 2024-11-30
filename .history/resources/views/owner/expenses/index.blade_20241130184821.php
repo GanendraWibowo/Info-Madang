@@ -7,7 +7,7 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Kelola Pengeluaran</h5>
-                    <a href="{{ route('owner.expenses.create') }}" class="btn btn-primary">Tambah Pengeluaran</a>
+                    <a href="{{ route('owner.expenses.create') }}" class="btn btn-primary">Add New Expense</a>
                 </div>
 
                 <div class="card-body">

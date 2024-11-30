@@ -96,11 +96,6 @@
                             <div class="d-flex gap-2">
                                 <a href="{{ route('owner.updateStock', ['id' => $product->id]) }}" class="btn btn-warning">Ubah Stok</a>
                                 <a href="{{ route('owner.updateProduct', ['id' => $product->id]) }}" class="btn btn-secondary">Ubah Produk</a>
-                                <form action="{{ route('owner.deleteProduct', ['id' => $product->id]) }}" method="POST" style="display: inline;" onsubmit="return confirm('Apakah Anda yakin ingin menghapus produk ini?');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger">Hapus Produk</button>
-                                </form>
                             </div>
                         </div>
                     </div>
