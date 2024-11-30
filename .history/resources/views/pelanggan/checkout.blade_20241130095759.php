@@ -52,7 +52,7 @@
             <button type="submit" class="btn btn-success mt-3">Konfirmasi dan Bayar</button>
         </form>
     @else
-        <p>Keranjang Anda Kosong</p>
+        <p>Your cart is empty.</p>
     @endif
 </div>
 @endsection

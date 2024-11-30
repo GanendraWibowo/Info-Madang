@@ -13,7 +13,7 @@
                     <h6>{{ $order->created_at->format('d-m-Y') }}</h6>
                     <p>Status: {{ $order->status }}</p>
                     <p>Total: Rp. {{ number_format($order->total_bayar, 0, ',', '.') }}</p>
-                    <a href="{{ route('customer.order.status', $order->id) }}" class="btn btn-info">Lihat Detail</a>
+                    <a href="{{ route('customer.order.status', $order->id) }}" class="btn btn-info">View Details</a>
                 </div>
             </div>
         @endforeach

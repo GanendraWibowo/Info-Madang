@@ -8,8 +8,8 @@
     <div class="card">
         <div class="card-body">
             <h5 class="card-title text-center" style="font-weight: bold;">Pesanan Nomor #{{ $order->queue_number }}</h5>
-            <p>Status: {{ $order->order_status }}</p>
-            <p>Status Pembayaran: {{ $order->status }}</p>
+            <p>Status: {{ $order->status }}</p>
+            <p>Status Pembayaran: {{ $order->order_status }}</p>
             <p>Total: Rp. {{ number_format($order->total_bayar, 0, ',', '.') }}</p>
 
             <h5>Produk</h5>

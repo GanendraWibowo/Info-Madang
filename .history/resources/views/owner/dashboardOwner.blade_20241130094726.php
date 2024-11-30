@@ -91,8 +91,8 @@
                             <p class="card-text">Harga: Rp {{ number_format($product->price, 0, ',', '.') }}</p>
                             <p class="card-text">Stok: {{ $product->stock }}</p>
                             <div class="d-flex gap-2">
-                                <a href="{{ route('owner.updateStock', ['id' => $product->id]) }}" class="btn btn-warning">Ubah Stok</a>
-                                <a href="{{ route('owner.updateProduct', ['id' => $product->id]) }}" class="btn btn-secondary">Ubah Produk</a>
+                                <a href="{{ route('owner.updateStock', ['id' => $product->id]) }}" class="btn btn-warning">Edit Stok</a>
+                                <a href="{{ route('owner.updateProduct', ['id' => $product->id]) }}" class="btn btn-secondary">Edit Produk</a>
                             </div>
                         </div>
                     </div>

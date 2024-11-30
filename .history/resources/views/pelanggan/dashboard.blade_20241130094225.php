@@ -49,8 +49,8 @@
                     <div class="card-body">
                         <h6 class="card-title">{{ $product->name }}</h6>
                         <p class="card-text">{{$product->description}}</p>
-                        <p class="card-text">Harga: Rp. {{ number_format($product->price, 0, ',', '.') }}</p>
-                        <p class="card-text">Stok: {{ $product->stock }}</p>
+                        <p class="card-text">Price: Rp. {{ number_format($product->price, 0, ',', '.') }}</p>
+                        <p class="card-text">Stock: {{ $product->stock }}</p>
                         <button class="btn btn-primary add-to-cart" data-id="{{ $product->id }}">+</button>
                     </div>
                 </div>

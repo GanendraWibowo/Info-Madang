@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ asset('css/Masuk.css') }}">
-    <title>Masuk / Daftar</title>
+    <link rel="stylesheet" href="{{ asset('css/login.css') }}">
+    <title>Login / Register</title>
 </head>
 
 <body>
@@ -15,7 +15,7 @@
                 <!-- Form Sign In -->
                 <form action="{{ route('account.authenticate') }}" method="POST" class="sign-in-form">
                     <img src="{{ asset('img/INFO_MADANG.png') }}" class="image-title" alt="Logo">
-                    <h2 class="title">Masuk</h2>
+                    <h2 class="title">Login</h2>
                     @csrf
                     <div class="input-field">
                         <i class="fas fa-user"></i>
@@ -25,17 +25,17 @@
                         <i class="fas fa-lock"></i>
                         <input type="password" name="password" placeholder="Masukkan password" required />
                     </div>
-                    @if ($errors->has('Masuk_error'))
+                    @if ($errors->has('login_error'))
                         <div class="alert alert-danger">
-                            <p>{{ $errors->first('Masuk_error') }}</p>
+                            <p>{{ $errors->first('login_error') }}</p>
                         </div>
                     @endif
-                    <button type="submit" class="btn solid">Masuk</button>
-                    <p class="social-text">Belum punya akun? <span id="showSignUp" class="text-teal-600 cursor-pointer">Daftar Sekarang!</span></p>
+                    <button type="submit" class="btn solid">Login</button>
+                    <p class="social-text">Belum punya akun? <span id="showSignUp" class="text-teal-600 cursor-pointer">Sign Up</span></p>
                 </form>
 
                 <!-- Form Sign Up -->
-                <form action="{{ route('account.processDaftar') }}" method="POST" class="sign-up-form">
+                <form action="{{ route('account.processRegister') }}" method="POST" class="sign-up-form">
                     <img src="{{ asset('img/INFO_MADANG.png') }}" class="image-title" alt="Logo">
                     <h2 class="title">Sign Up</h2>
                     @csrf
@@ -88,8 +88,8 @@
                             <p>{{ session('sukses') }}</p>
                         </div>
                     @endif
-                    <button type="submit" class="btn">Daftar</button>
-                    <p class="social-text">Sudah punya akun? <span id="showSignIn" class="text-teal-600 cursor-pointer">Masuk Sekarang!</span></p>
+                    <button type="submit" class="btn">Register</button>
+                    <p class="social-text">Sudah punya akun? <span id="showSignIn" class="text-teal-600 cursor-pointer">Login</span></p>
                 </form>
             </div>
         </div>

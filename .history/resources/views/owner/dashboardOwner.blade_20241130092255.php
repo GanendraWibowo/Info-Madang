@@ -2,7 +2,8 @@
 
 @section('content')
     <div class="container my-5">
-        <h1 class="mt-5">Halaman Utama</h1>
+        <h1 class="mt-5">Halaman Utama
+</h1>
         
         <div class="row mb-4">
             <div class="col-md-6 mb-3">
@@ -32,7 +33,7 @@
             <div class="col-md-6 mb-3">
                 <div class="card bg-warning text-white">
                     <div class="card-body">
-                        <h5 class="card-title">Keuntungan</h5>
+                        <h5 class="card-title">Profit</h5>
                         <h3 class="card-text">Rp {{ number_format($profit, 0, ',', '.') }}</h3>
                     </div>
                 </div>
@@ -43,7 +44,7 @@
             <a href="{{ route('owner.products') }}" class="btn btn-success me-2">Tambah Produk Baru</a>
             <a href="{{ route('owner.orders') }}" class="btn btn-primary me-2">Pesanan</a>
             <a href="{{ route('owner.expenses.index') }}" class="btn btn-info me-2">Kelola Pengeluaran</a>
-            <a href="{{ route('logout') }}" class="btn btn-danger">Keluar</a>
+            <a href="{{ route('Keluar') }}" class="btn btn-danger">Keluar</a>
         </div>
 
         <h2 class="mt-4 mb-3">Katalog Produk</h2>
@@ -87,7 +88,6 @@
                         @endif
                         <div class="card-body">
                             <h5 class="card-title">{{ $product->name }}</h5>
-                            <p class="card-text">{{$product->description}}</p>
                             <p class="card-text">Harga: Rp {{ number_format($product->price, 0, ',', '.') }}</p>
                             <p class="card-text">Stok: {{ $product->stock }}</p>
                             <div class="d-flex gap-2">
