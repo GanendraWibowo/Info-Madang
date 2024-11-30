@@ -15,7 +15,7 @@
                     <p>Role: {{ Auth::user()->role }}</p>
                     <form action="{{ route('logout') }}" method="POST" style="display: inline;">
                         @csrf
-                        <button type="submit" class="btn btn-danger">Keluar</button>
+                        <button type="submit" class="btn btn-danger">Logout</button>
                     </form>
                 </div>
             </div>

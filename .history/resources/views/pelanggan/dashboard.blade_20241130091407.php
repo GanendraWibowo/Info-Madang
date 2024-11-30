@@ -45,10 +45,9 @@
             <!-- Adjusted column class for 2-column layout on mobile -->
             <div class="col-6 col-sm-12 col-md-6 col-lg-4">
                 <div class="card mb-4">
-                    <img src="{{ asset('storage/' . $product->image) }}" class="card-img-top" alt="{{ $product->name }}">
+                    <img src="{{ asset('assets/' . $product->image) }}" class="card-img-top" alt="{{ $product->name }}">
                     <div class="card-body">
                         <h6 class="card-title">{{ $product->name }}</h6>
-                        <p class="card-text">{{$product->description}}</p>
                         <p class="card-text">Price: Rp. {{ number_format($product->price, 0, ',', '.') }}</p>
                         <p class="card-text">Stock: {{ $product->stock }}</p>
                         <button class="btn btn-primary add-to-cart" data-id="{{ $product->id }}">+</button>

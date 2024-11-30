@@ -36,7 +36,7 @@
             </div>
             <div class="card mt-3">
                 <div class="card-body">
-                    <a href="{{ route('logout') }}" class="btn btn-danger">Keluar</a>
+                    <a href="{{ route('logout') }}" class="btn btn-danger">Logout</a>
                 </div>
             </div>
         </div>

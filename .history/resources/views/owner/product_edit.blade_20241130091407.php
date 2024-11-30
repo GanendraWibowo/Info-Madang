@@ -4,10 +4,10 @@
 @section('content')
 <div class="main-content">
    <div class="container mt-5">
-       <h2>Ubah Produk</h2>
+       <h2>Edit Produk</h2>
 
 
-       <form action="{{ route('owner.PerbaruiProduct', $product->id) }}" method="POST">
+       <form action="{{ route('owner.updateProduct', $product->id) }}" method="POST">
            @csrf
            @method('PUT')
 
@@ -42,7 +42,7 @@
            </div>
 
 
-           <button type="submit" class="btn btn-primary">Perbarui Produk</button>
+           <button type="submit" class="btn btn-primary">Update Produk</button>
        </form>
    </div>
 </div>
